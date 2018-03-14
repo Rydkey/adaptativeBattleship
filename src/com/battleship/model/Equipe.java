@@ -1,5 +1,6 @@
 package com.battleship.model;
 
-public class Equipe {
-    private String nom;
+public class Equipe
+{
+  private String nom;
 }

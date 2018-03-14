@@ -1,4 +1,5 @@
 package com.battleship.model;
 
-public class Defenseur extends Matelot {
+public class Defenseur extends Matelot
+{
 }

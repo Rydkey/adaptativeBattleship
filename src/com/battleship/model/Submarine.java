@@ -1,4 +1,5 @@
 package com.battleship.model;
 
-public class Submarine extends Navire {
+public class Submarine extends Navire
+{
 }

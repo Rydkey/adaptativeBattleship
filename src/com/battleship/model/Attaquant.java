@@ -1,4 +1,5 @@
 package com.battleship.model;
 
-public class Attaquant extends Matelot {
+public class Attaquant extends Matelot
+{
 }

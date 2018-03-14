@@ -1,6 +1,7 @@
 package com.battleship.model;
 
-public class Case {
-    private int x;
-    private int y;
+public class Case
+{
+  private int[] coordonnees;
+  private Status status;
 }

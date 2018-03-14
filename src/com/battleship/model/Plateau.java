@@ -1,5 +1,8 @@
 package com.battleship.model;
 
-public class Plateau {
-    private List<Case> lesCases;
+import java.util.List;
+
+public class Plateau
+{
+  private List<Case> lesCases;
 }
