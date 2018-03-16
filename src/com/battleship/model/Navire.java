@@ -2,7 +2,7 @@ package com.battleship.model;
 
 import java.util.List;
 
-abstract class Navire
+abstract class Navire implements BattleShip
 {
   private List<Case> caseOccupees;
   private boolean touche;
