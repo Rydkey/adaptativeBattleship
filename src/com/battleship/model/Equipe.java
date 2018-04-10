@@ -1,6 +1,7 @@
 package com.battleship.model;
 
-public class Equipe
+public enum Equipe
 {
-  private String nom;
+  EquipeGentille,
+  EquippeMechant
 }
