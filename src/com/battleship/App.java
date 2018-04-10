@@ -6,6 +6,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import static com.battleship.model.Equipe.EquipeGentille;
@@ -40,9 +41,9 @@ public class App
     amiral1.setName("archibald");
     amiral1.setTableauJoueurs(new HashMap<>());
     amiral1.getTableauJoueurs().put(torpilleur1, equipage);
-//    for (Matelot matelot : equipage.getClass().getDeclaredField("")) {
-//
-//    }
+    for (Field matelot : equipage.getClass().getDeclaredFields()) {
+      System.out.println(matelot.getName());
+    }
 
     equipage.getAttaquant().getNaviresAssignes().add(torpilleur1);
 
