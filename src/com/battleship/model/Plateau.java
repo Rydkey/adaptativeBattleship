@@ -5,24 +5,19 @@ import java.util.List;
 
 public class Plateau
 {
-  private List<Case> lesCases;
+  private Case[][] lesCases;
 
   public Plateau()
   {
-    this.lesCases = Collections.emptyList();
+    this.lesCases = new Case[8][8];
   }
 
-  public Plateau(List<Case> lesCases)
-  {
-    this.lesCases = lesCases;
-  }
-
-  public List<Case> getLesCases()
+  public Case[][] getLesCases()
   {
     return lesCases;
   }
 
-  public void setLesCases(List<Case> lesCases)
+  public void setLesCases(Case[][] lesCases)
   {
     this.lesCases = lesCases;
   }
