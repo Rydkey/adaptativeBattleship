@@ -2,27 +2,39 @@ package com.battleship.model;
 
 public class Case
 {
-  private int[] coordonnees;
+  private int x;
+  private int y;
   private Status status;
 
   public Case()
   {
   }
 
-  public Case(int[] coordonnees, Status status)
+  public Case(int x, int y, Status status)
   {
-    this.coordonnees = coordonnees;
+    this.x = x;
+    this.y = y;
     this.status = status;
   }
 
-  public int[] getCoordonnees()
+  public int getX()
   {
-    return coordonnees;
+    return x;
   }
 
-  public void setCoordonnees(int[] coordonnees)
+  public void setX(int x)
   {
-    this.coordonnees = coordonnees;
+    this.x = x;
+  }
+
+  public int getY()
+  {
+    return y;
+  }
+
+  public void setY(int y)
+  {
+    this.y = y;
   }
 
   public Status getStatus()
