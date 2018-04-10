@@ -1,10 +1,10 @@
 package com.battleship.model;
 
+import java.util.Collections;
 import java.util.List;
 
 abstract class Joueur
 {
-  private List<Navire> naviresAssignes;
   private Equipe equipe;
   private String Name;
 
@@ -12,20 +12,9 @@ abstract class Joueur
   {
   }
 
-  public Joueur(List<Navire> naviresAssignes, Equipe equipe)
+  public Joueur(Equipe equipe)
   {
-    this.naviresAssignes = naviresAssignes;
     this.equipe = equipe;
-  }
-
-  public List<Navire> getNaviresAssignes()
-  {
-    return naviresAssignes;
-  }
-
-  public void setNaviresAssignes(List<Navire> naviresAssignes)
-  {
-    this.naviresAssignes = naviresAssignes;
   }
 
   public Equipe getEquipe()

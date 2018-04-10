@@ -1,5 +1,6 @@
 package com.battleship.model;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Plateau
@@ -8,6 +9,7 @@ public class Plateau
 
   public Plateau()
   {
+    this.lesCases = Collections.emptyList();
   }
 
   public Plateau(List<Case> lesCases)
