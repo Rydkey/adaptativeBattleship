@@ -2,19 +2,16 @@ package com.battleship;
 
 import com.battleship.model.*;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.battleship.model.Equipe.EquipeGentille;
 import static com.battleship.model.Status.VIDE;
 
 public class App
 {
-  public static void main(String[] args) throws IntrospectionException
+  public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException
   {
     Partie partie = new Partie();
     Matelot matelot1 = new Matelot();
@@ -34,31 +31,27 @@ public class App
     Equipage equipage = new Equipage();
 
     equipage.setAttaquant((Attaquant) matelot1);
-    equipage.setDefenseur((Defenseur) matelot2);
-    equipage.setDefenseur((Defenseur) matelot3);
+//    equipage.setDefenseur((Defenseur) matelot2);
+//    equipage.setDefenseur((Defenseur) matelot3);
 
     Amiral amiral1 = new Amiral();
     amiral1.setName("archibald");
     amiral1.setTableauJoueurs(new HashMap<>());
     amiral1.getTableauJoueurs().put(torpilleur1, equipage);
-    for (Field matelot : equipage.getClass().getDeclaredFields()) {
-      System.out.println(matelot.getName());
+    for (Matelot matelot : equipage.getAllEquipage()){
+      if (matelot != null){
+        matelot.getNaviresAssignes().add(torpilleur1);
+        System.out.println(matelot.getNaviresAssignes().get(0));
+      }
     }
-
-    equipage.getAttaquant().getNaviresAssignes().add(torpilleur1);
-
     Plateau plateau = new Plateau();
 
 
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
         Case thecase = new Case(i, j, VIDE);
-        plateau.getLesCases().add(thecase);
-        System.out.println(plateau.getLesCases().get((i + 1) * j).getX());
+        plateau.getLesCases()[i][j] = (thecase);
       }
-      System.out.println("\n");
     }
-
-    System.out.println(amiral1.getTableauJoueurs().get(torpilleur1).getDefenseur().getName());
   }
 }

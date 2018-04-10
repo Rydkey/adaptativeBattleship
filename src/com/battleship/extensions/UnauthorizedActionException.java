@@ -1,6 +1,6 @@
 package com.battleship.extensions;
 
-public class UnauthorizedActionException
+public class UnauthorizedActionException extends Exception
 {
   public UnauthorizedActionException()
   {

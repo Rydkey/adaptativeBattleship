@@ -1,5 +1,6 @@
 package com.battleship.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Matelot extends Joueur
@@ -10,7 +11,7 @@ public class Matelot extends Joueur
   public Matelot()
   {
     super();
-
+    this.naviresAssignes = new ArrayList<>();
   }
 
   public Matelot(List<Navire> naviresAssignes, Equipe equipe)

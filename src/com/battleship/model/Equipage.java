@@ -1,5 +1,8 @@
 package com.battleship.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Equipage
 {
   Attaquant attaquant;
@@ -33,6 +36,14 @@ public class Equipage
   public void setDefenseur(Defenseur defenseur)
   {
     this.defenseur = defenseur;
+  }
+
+  public List<Matelot> getAllEquipage()
+  {
+    List<Matelot> equipage = new LinkedList<>();
+    equipage.add(this.attaquant);
+    equipage.add(this.attaquant);
+    return equipage;
   }
 
 }
