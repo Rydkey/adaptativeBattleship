@@ -1,10 +1,6 @@
 package com.battleship;
 
-import com.battleship.extensions.CantShootException;
 import com.battleship.model.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.battleship.model.Status.VIDE;
 

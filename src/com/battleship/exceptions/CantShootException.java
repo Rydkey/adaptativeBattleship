@@ -1,4 +1,4 @@
-package com.battleship.extensions;
+package com.battleship.exceptions;
 
 public class CantShootException extends Exception
 {
