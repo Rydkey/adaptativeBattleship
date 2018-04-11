@@ -1,4 +1,4 @@
-package com.battleship.model.navires;
+package com.battleship.model;
 
 import com.battleship.model.Navire;
 

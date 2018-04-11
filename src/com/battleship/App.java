@@ -2,7 +2,7 @@ package com.battleship;
 
 import com.battleship.model.*;
 import com.battleship.model.Navire;
-import com.battleship.model.navires.Torpilleur;
+import com.battleship.model.Torpilleur;
 
 import static com.battleship.model.Status.VIDE;
 
