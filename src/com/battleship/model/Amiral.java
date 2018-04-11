@@ -8,5 +8,4 @@ public class Amiral extends Joueur
   {
     super();
   }
-
 }

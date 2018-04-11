@@ -1,4 +1,6 @@
-package com.battleship.model;
+package com.battleship.model.navires;
+
+import com.battleship.model.Navire;
 
 public class Cuirasse extends Navire
 {

@@ -1,5 +1,6 @@
 package com.battleship.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Navire implements NavireInterface
@@ -8,10 +9,14 @@ public abstract class Navire implements NavireInterface
   private boolean touche;
   private boolean coule;
   private int recharge;
-  private boolean pret;
+  private boolean pretATirrer;
+
   private String name;
 
-  public Navire() {}
+  public Navire()
+  {
+    this.caseOccupees = new ArrayList<>();
+  }
 
   public List<Case> getCaseOccupees()
   {
@@ -53,20 +58,20 @@ public abstract class Navire implements NavireInterface
     this.name = name;
   }
 
-  public boolean isPret()
+  public boolean isPretATirrer()
   {
-    return pret;
+    return pretATirrer;
   }
 
-  public void setPret(boolean pret)
+  public void setPretATirrer(boolean pretATirrer)
   {
-    this.pret = pret;
+    this.pretATirrer = pretATirrer;
   }
 
   @Override
   public void deplace(int[] vecteur)
   {
-    for (Case currentCase: caseOccupees) {
+    for (Case currentCase : caseOccupees) {
       currentCase.setX(vecteur[0]);
       currentCase.setY(vecteur[1]);
     }

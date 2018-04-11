@@ -1,6 +1,6 @@
-package com.battleship.model;
+package com.battleship.model.navires;
 
-import com.battleship.extensions.UnauthorizedActionException;
+import com.battleship.model.Navire;
 
 public class SousMarin extends Navire
 {

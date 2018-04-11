@@ -1,10 +1,8 @@
 package com.battleship;
 
-import com.battleship.extensions.CantShootException;
 import com.battleship.model.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.battleship.model.Navire;
+import com.battleship.model.navires.Torpilleur;
 
 import static com.battleship.model.Status.VIDE;
 
@@ -49,26 +47,26 @@ public class App
 
     /*Permission de tirer*/
 //      if (equipeA.getTableauJoueurs().get(torpilleur1).getAttaquant() == matelot1){
-//        if(torpilleur1.isPret()){
+//        if(torpilleur1.isPretATirrer()){
 //          torpilleur1.tire();
-//          torpilleur1.setPret(false);
+//          torpilleur1.setPretATirrer(false);
 //          /*@Todo: check case other plateau*/
 //        }else{
-//          throw new CantShootException();
+//          throw new CantShotException();
 //        }
 //      }
 
     /*Permission de deplacer*/
-      if (equipeA.getTableauJoueurs().get(torpilleur1).getDefenseur() == matelot1){
-        System.out.println("tu peux tirer bébé");
-        torpilleur1.tire();
-        torpilleur1.setPret(false);
-        /*@Todo: check case other plateau*/
-      }
-
-//        System.out.print(matelot.getClass().getSimpleName()+" "+matelot.getName() + " ");
+//      if (equipeA.getTableauJoueurs().get(torpilleur1).getDefenseur() == matelot1){
+//        if (!torpilleur1.isTouche() || !torpilleur1.isCoule()){
+//          System.out.println("tu peux bouger bébé");
+//          /*@Todo: check mouvement possible*/
+//        }else{
+//          throw new CantMoveException();
+//        }
 //      }
-      Plateau plateau = new Plateau();
+
+    Plateau plateau = new Plateau();
 
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
@@ -78,7 +76,8 @@ public class App
     }
   }
 
-  public static void navireSetDefenseur(Equipe equipe,Navire navire, Matelot matelot){
+  public static void navireSetDefenseur(Equipe equipe, Navire navire, Matelot matelot)
+  {
     equipe.getTableauJoueurs().get(navire).setDefenseur((Defenseur) matelot);
   }
 }
