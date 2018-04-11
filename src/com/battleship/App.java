@@ -66,12 +66,13 @@ public class App
 //        }
 //      }
 
-    Plateau plateau = new Plateau();
+    Plateau plateauA = new Plateau();
+    Plateau plateauB = new Plateau();
 
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
         Case thecase = new Case(i, j, VIDE);
-        plateau.getLesCases()[i][j] = (thecase);
+        plateauA.getLesCases()[i][j] = (thecase);
       }
     }
   }
