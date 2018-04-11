@@ -5,7 +5,7 @@ import com.battleship.extensions.UnauthorizedActionException;
 public class SousMarin extends Navire
 {
   @Override
-  public void deplace()
+  public void deplace(int[] vecteur)
   {
   }
 

@@ -38,11 +38,11 @@ public class Equipage
     this.defenseur = defenseur;
   }
 
-  public List<Matelot> getAllEquipage()
+  public List<Matelot> getJoueursInEquipage()
   {
     List<Matelot> equipage = new LinkedList<>();
     equipage.add(this.attaquant);
-    equipage.add(this.attaquant);
+    equipage.add(this.defenseur);
     return equipage;
   }
 

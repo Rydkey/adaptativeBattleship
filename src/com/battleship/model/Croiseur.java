@@ -3,7 +3,7 @@ package com.battleship.model;
 public class Croiseur extends Navire
 {
   @Override
-  public void deplace()
+  public void deplace(int[] vecteur)
   {
 
   }

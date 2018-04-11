@@ -1,51 +1,74 @@
 package com.battleship;
 
+import com.battleship.extensions.CantShootException;
 import com.battleship.model.*;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
-import static com.battleship.model.Equipe.EquipeGentille;
 import static com.battleship.model.Status.VIDE;
 
 public class App
 {
-  public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException
+  public static void main(String[] args)
   {
     Partie partie = new Partie();
+    Equipe equipeA = new Equipe("Equipe A");
     Matelot matelot1 = new Matelot();
     Matelot matelot2 = new Matelot();
     Matelot matelot3 = new Matelot();
 
     matelot1 = new Attaquant();
-    matelot1.setEquipe(EquipeGentille);
+    matelot1.setEquipe(equipeA);
     matelot1.setName("M1");
     matelot2 = new Defenseur();
-    matelot2.setEquipe(EquipeGentille);
+    matelot2.setEquipe(equipeA);
     matelot2.setName("M2");
-    matelot3 = new Defenseur();
-    matelot3.setEquipe(EquipeGentille);
-    matelot3.setName("M3");
     Torpilleur torpilleur1 = new Torpilleur();
+    torpilleur1.setName("torpilleur");
     Equipage equipage = new Equipage();
 
     equipage.setAttaquant((Attaquant) matelot1);
-//    equipage.setDefenseur((Defenseur) matelot2);
-//    equipage.setDefenseur((Defenseur) matelot3);
+    equipage.setDefenseur((Defenseur) matelot2);
 
     Amiral amiral1 = new Amiral();
     amiral1.setName("archibald");
-    amiral1.setTableauJoueurs(new HashMap<>());
-    amiral1.getTableauJoueurs().put(torpilleur1, equipage);
-    for (Matelot matelot : equipage.getAllEquipage()){
-      if (matelot != null){
-        matelot.getNaviresAssignes().add(torpilleur1);
-        System.out.println(matelot.getNaviresAssignes().get(0));
-      }
-    }
-    Plateau plateau = new Plateau();
+    equipeA.getTableauJoueurs().put(torpilleur1, equipage);
 
+
+    /*Tout les équipages par rapport aux navires */
+//    for (Map.Entry<Navire, Equipage> entry : equipeA.getTableauJoueurs().entrySet()) {
+//      Navire navire = entry.getKey();
+//      System.out.print("Navire : " + navire.getName());
+//      Equipage equipage1 = entry.getValue();
+//      for (Matelot matelot: equipage1.getJoueursInEquipage()) {
+//        System.out.print(matelot.getClass().getSimpleName()+" "+matelot.getName() + " ");
+//      }
+//      System.out.println();
+//    }
+
+    /*Permission de tirer*/
+//      if (equipeA.getTableauJoueurs().get(torpilleur1).getAttaquant() == matelot1){
+//        if(torpilleur1.isPret()){
+//          torpilleur1.tire();
+//          torpilleur1.setPret(false);
+//          /*@Todo: check case other plateau*/
+//        }else{
+//          throw new CantShootException();
+//        }
+//      }
+
+    /*Permission de deplacer*/
+      if (equipeA.getTableauJoueurs().get(torpilleur1).getDefenseur() == matelot1){
+        System.out.println("tu peux tirer bébé");
+        torpilleur1.tire();
+        torpilleur1.setPret(false);
+        /*@Todo: check case other plateau*/
+      }
+
+//        System.out.print(matelot.getClass().getSimpleName()+" "+matelot.getName() + " ");
+//      }
+      Plateau plateau = new Plateau();
 
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
@@ -53,5 +76,9 @@ public class App
         plateau.getLesCases()[i][j] = (thecase);
       }
     }
+  }
+
+  public static void navireSetDefenseur(Equipe equipe,Navire navire, Matelot matelot){
+    equipe.getTableauJoueurs().get(navire).setDefenseur((Defenseur) matelot);
   }
 }
