@@ -6,10 +6,10 @@ import java.util.List;
 public class Partie
 {
   private HashMap<Equipe,Plateau> plateaux;
-  private List<Joueur> joueurs;
 
   public Partie()
   {
+    this.plateaux = new HashMap<>();
   }
 
   public HashMap<Equipe, Plateau> getPlateaux()
@@ -22,13 +22,4 @@ public class Partie
     this.plateaux = plateaux;
   }
 
-  public List<Joueur> getJoueurs()
-  {
-    return joueurs;
-  }
-
-  public void setJoueurs(List<Joueur> joueurs)
-  {
-    this.joueurs = joueurs;
-  }
 }

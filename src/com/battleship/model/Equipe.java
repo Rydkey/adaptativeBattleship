@@ -1,41 +1,47 @@
 package com.battleship.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class Equipe
-{
-  HashMap<Navire, Equipage> tableauJoueurs;
-  private String name;
+public class Equipe {
 
-  public Equipe()
-  {
-    this.tableauJoueurs = new HashMap<>();
+  private List<Joueur> listeJoueur;
+  private HashMap<Navire, Equipage> assignationNavireEquipage;
+  private static NomEquipe nomEquipe;
+
+  public Equipe() {
+    this.assignationNavireEquipage = new HashMap<>();
+    this.listeJoueur = new ArrayList<>();
   }
 
-  public Equipe(String name)
-  {
-    this.name = name;
-    this.tableauJoueurs = new HashMap<>();
-
+  public Equipe(NomEquipe nomEquipe) {
+    this.nomEquipe = nomEquipe;
+    this.assignationNavireEquipage = new HashMap<>();
+    this.listeJoueur = new ArrayList<>();
   }
 
-  public String getName()
-  {
-    return name;
+  public static NomEquipe getNomEquipe() {
+    return nomEquipe;
   }
 
-  public void setName(String name)
-  {
-    this.name = name;
+  public static void setNomEquipe(NomEquipe nomEquipe) {
+    Equipe.nomEquipe = nomEquipe;
   }
 
-  public HashMap<Navire, Equipage> getTableauJoueurs()
-  {
-    return tableauJoueurs;
+  public HashMap<Navire, Equipage> getAssignationNavireEquipage() {
+    return assignationNavireEquipage;
   }
 
-  public void setTableauJoueurs(HashMap<Navire, Equipage> tableauJoueurs)
-  {
-    this.tableauJoueurs = tableauJoueurs;
+  public void setAssignationNavireEquipage(HashMap<Navire, Equipage> assignationNavireEquipage) {
+    this.assignationNavireEquipage = assignationNavireEquipage;
+  }
+
+  public List<Joueur> getListeJoueur() {
+    return listeJoueur;
+  }
+
+  public void setListeJoueur(List<Joueur> listeJoueur) {
+    this.listeJoueur = listeJoueur;
   }
 }

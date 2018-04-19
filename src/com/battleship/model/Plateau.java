@@ -9,7 +9,7 @@ public class Plateau
 
   public Plateau()
   {
-    this.lesCases = new Case[8][8];
+    this.lesCases = new Case[10][10];
   }
 
   public Case[][] getLesCases()
