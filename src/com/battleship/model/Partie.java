@@ -1,41 +1,25 @@
 package com.battleship.model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Partie
 {
-  private Plateau[] plateau;
-  private List<Joueur> joueurs;
+  private HashMap<Equipe,Plateau> plateaux;
 
   public Partie()
   {
-    this.joueurs = new ArrayList<>();
+    this.plateaux = new HashMap<>();
   }
 
-  public Partie(Plateau[] plateau, List<Joueur> joueurs)
+  public HashMap<Equipe, Plateau> getPlateaux()
   {
-    this.plateau = plateau;
-    this.joueurs = joueurs;
+    return plateaux;
   }
 
-  public Plateau[] getPlateau()
+  public void setPlateaux(HashMap<Equipe, Plateau> plateaux)
   {
-    return plateau;
+    this.plateaux = plateaux;
   }
 
-  public void setPlateau(Plateau[] plateau)
-  {
-    this.plateau = plateau;
-  }
-
-  public List<Joueur> getJoueurs()
-  {
-    return joueurs;
-  }
-
-  public void setJoueurs(List<Joueur> joueurs)
-  {
-    this.joueurs = joueurs;
-  }
 }

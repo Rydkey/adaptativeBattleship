@@ -3,87 +3,85 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="250.5" y="443.0">com.battleship.model.BattleShip</node>
-    <node x="243.5" y="0.0">com.battleship.model.Joueur</node>
-    <node x="217.0" y="569.0">com.battleship.model.Navire</node>
-    <node x="167.0" y="718.0">com.battleship.model.Torpilleur</node>
-    <node x="501.0" y="718.0">com.battleship.model.SousMarin</node>
-    <node x="0.0" y="839.0">com.battleship.model.Case</node>
-    <node x="348.0" y="839.0">com.battleship.model.Plateau</node>
-    <node x="398.5" y="207.5">com.battleship.model.Amiral</node>
-    <node x="334.0" y="718.0">com.battleship.model.Croiseur</node>
-    <node x="269.0" y="322.0">com.battleship.model.Defenseur</node>
-    <node x="576.0" y="839.0">com.battleship.model.Equipe</node>
-    <node x="693.0" y="443.0">com.battleship.model.Partie</node>
-    <node x="0.0" y="718.0">com.battleship.model.Cuirasse</node>
-    <node x="141.5" y="196.0">com.battleship.model.Matelot</node>
-    <node x="0.0" y="322.0">com.battleship.model.Attaquant</node>
-    <node x="216.0" y="839.0">com.battleship.model.Status</node>
+    <node x="0.0" y="666.0">com.battleship.model.NomEquipe</node>
+    <node x="618.5" y="0.0">com.battleship.model.Joueur</node>
+    <node x="134.5" y="81.0">com.battleship.model.Navire</node>
+    <node x="0.0" y="300.0">com.battleship.model.SousMarin</node>
+    <node x="130.0" y="300.0">com.battleship.model.Torpilleur</node>
+    <node x="173.5" y="0.0">com.battleship.model.NavireInterface</node>
+    <node x="569.0" y="376.0">com.battleship.model.Case</node>
+    <node x="556.0" y="544.0">com.battleship.model.Plateau</node>
+    <node x="700.5" y="104.0">com.battleship.model.Amiral</node>
+    <node x="254.0" y="300.0">com.battleship.model.Croiseur</node>
+    <node x="516.0" y="185.0">com.battleship.model.Defenseur</node>
+    <node x="134.0" y="376.0">com.battleship.model.Equipe</node>
+    <node x="0.0" y="544.0">com.battleship.model.Equipage</node>
+    <node x="372.0" y="300.0">com.battleship.model.Cuirasse</node>
+    <node x="235.0" y="544.0">com.battleship.model.Partie</node>
+    <node x="587.5" y="104.0">com.battleship.model.Matelot</node>
+    <node x="645.0" y="185.0">com.battleship.model.Attaquant</node>
+    <node x="0.0" y="376.0">com.battleship.model.Status</node>
   </nodes>
   <notes />
   <edges>
     <edge source="com.battleship.model.Torpilleur" target="com.battleship.model.Navire">
-      <point x="0.0" y="-38.0" />
-      <point x="240.5" y="698.0" />
-      <point x="297.25" y="698.0" />
-      <point x="-26.75" y="49.5" />
+      <point x="0.0" y="-15.5" />
+      <point x="182.0" y="275.0" />
+      <point x="215.5" y="275.0" />
+      <point x="-27.0" y="84.5" />
     </edge>
     <edge source="com.battleship.model.Matelot" target="com.battleship.model.Joueur">
-      <point x="0.0" y="-38.0" />
-      <point x="260.0" y="171.0" />
-      <point x="301.0" y="171.0" />
-      <point x="-57.5" y="73.0" />
+      <point x="0.0" y="-15.5" />
+      <point x="634.0" y="79.0" />
+      <point x="653.75" y="79.0" />
+      <point x="-35.25" y="27.0" />
     </edge>
-    <edge source="com.battleship.model.Attaquant" target="com.battleship.model.Matelot">
-      <point x="0.0" y="-38.0" />
-      <point x="124.5" y="297.0" />
-      <point x="200.75" y="297.0" />
-      <point x="-59.25" y="38.0" />
-    </edge>
-    <edge source="com.battleship.model.Navire" target="com.battleship.model.BattleShip">
-      <point x="0.0" y="-49.5" />
-      <point x="0.0" y="38.0" />
-    </edge>
-    <edge source="com.battleship.model.Cuirasse" target="com.battleship.model.Navire">
-      <point x="0.0" y="-38.0" />
-      <point x="73.5" y="688.0" />
-      <point x="243.75" y="688.0" />
-      <point x="-80.25" y="49.5" />
-    </edge>
-    <edge source="com.battleship.model.Amiral" target="com.battleship.model.Joueur">
-      <point x="0.0" y="-26.5" />
-      <point x="457.0" y="171.0" />
-      <point x="416.0" y="171.0" />
-      <point x="57.5" y="73.0" />
-    </edge>
-    <edge source="com.battleship.model.Defenseur" target="com.battleship.model.Matelot">
-      <point x="0.0" y="-38.0" />
-      <point x="395.5" y="297.0" />
-      <point x="319.25" y="297.0" />
-      <point x="59.25" y="38.0" />
+    <edge source="com.battleship.model.Navire" target="com.battleship.model.NavireInterface">
+      <point x="0.0" y="-84.5" />
+      <point x="0.0" y="15.5" />
     </edge>
     <edge source="com.battleship.model.SousMarin" target="com.battleship.model.Navire">
-      <point x="0.0" y="-38.0" />
-      <point x="574.5" y="688.0" />
-      <point x="404.25" y="688.0" />
-      <point x="80.25" y="49.5" />
+      <point x="0.0" y="-15.5" />
+      <point x="55.0" y="275.0" />
+      <point x="161.5" y="275.0" />
+      <point x="-81.0" y="84.5" />
+    </edge>
+    <edge source="com.battleship.model.Defenseur" target="com.battleship.model.Matelot">
+      <point x="0.0" y="-15.5" />
+      <point x="570.5" y="160.0" />
+      <point x="610.75" y="160.0" />
+      <point x="-23.25" y="15.5" />
     </edge>
     <edge source="com.battleship.model.Croiseur" target="com.battleship.model.Navire">
-      <point x="0.0" y="-38.0" />
-      <point x="407.5" y="698.0" />
-      <point x="350.75" y="698.0" />
-      <point x="26.75" y="49.5" />
+      <point x="0.0" y="-15.5" />
+      <point x="303.0" y="275.0" />
+      <point x="269.5" y="275.0" />
+      <point x="27.0" y="84.5" />
+    </edge>
+    <edge source="com.battleship.model.Attaquant" target="com.battleship.model.Matelot">
+      <point x="0.0" y="-15.5" />
+      <point x="697.5" y="160.0" />
+      <point x="657.25" y="160.0" />
+      <point x="23.25" y="15.5" />
+    </edge>
+    <edge source="com.battleship.model.Amiral" target="com.battleship.model.Joueur">
+      <point x="0.0" y="-15.5" />
+      <point x="744.0" y="79.0" />
+      <point x="724.25" y="79.0" />
+      <point x="35.25" y="27.0" />
+    </edge>
+    <edge source="com.battleship.model.Cuirasse" target="com.battleship.model.Navire">
+      <point x="0.0" y="-15.5" />
+      <point x="421.5" y="275.0" />
+      <point x="323.5" y="275.0" />
+      <point x="81.0" y="84.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="465.5" y="400.0" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="229.0" y="507.5" />
   <SelectedNodes>
-    <node>com.battleship.model.Joueur</node>
+    <node>com.battleship.model.Equipe</node>
   </SelectedNodes>
   <Categories>
-    <Category>Constructors</Category>
-    <Category>Methods</Category>
-    <Category>Properties</Category>
-    <Category>Inner Classes</Category>
     <Category>Fields</Category>
   </Categories>
   <SCOPE>All</SCOPE>

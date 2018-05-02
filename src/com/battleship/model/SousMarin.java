@@ -1,11 +1,11 @@
 package com.battleship.model;
 
-import com.battleship.extensions.UnauthorizedActionException;
+import com.battleship.model.Navire;
 
 public class SousMarin extends Navire
 {
   @Override
-  public void deplace()
+  public void deplace(int[] vecteur)
   {
   }
 
