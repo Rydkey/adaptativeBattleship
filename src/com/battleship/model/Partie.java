@@ -1,5 +1,6 @@
 package com.battleship.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Partie
@@ -9,6 +10,7 @@ public class Partie
 
   public Partie()
   {
+    this.joueurs = new ArrayList<>();
   }
 
   public Partie(Plateau[] plateau, List<Joueur> joueurs)

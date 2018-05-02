@@ -3,7 +3,7 @@ package com.battleship.model;
 import java.util.Collections;
 import java.util.List;
 
-abstract class Joueur
+public abstract class Joueur
 {
   private Equipe equipe;
   private String Name;

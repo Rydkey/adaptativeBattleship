@@ -1,6 +1,8 @@
 package com.battleship;
 
 import com.battleship.model.*;
+import com.battleship.vue.AmiralVue;
+import javafx.application.Application;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -24,12 +26,15 @@ public class App
     matelot1 = new Attaquant();
     matelot1.setEquipe(EquipeGentille);
     matelot1.setName("M1");
+    partie.getJoueurs().add(matelot1);
     matelot2 = new Defenseur();
     matelot2.setEquipe(EquipeGentille);
     matelot2.setName("M2");
+    partie.getJoueurs().add(matelot2);
     matelot3 = new Defenseur();
     matelot3.setEquipe(EquipeGentille);
     matelot3.setName("M3");
+    partie.getJoueurs().add(matelot3);
     Torpilleur torpilleur1 = new Torpilleur();
     Equipage equipage = new Equipage();
 
@@ -41,24 +46,15 @@ public class App
     amiral1.setName("archibald");
     amiral1.setTableauJoueurs(new HashMap<>());
     amiral1.getTableauJoueurs().put(torpilleur1, equipage);
+
     for (Field matelot : equipage.getClass().getDeclaredFields()) {
       System.out.println(matelot.getName());
     }
 
-    equipage.getAttaquant().getNaviresAssignes().add(torpilleur1);
+    Plateau battlefield = new Plateau();
+    Case lesCases[][] = new Case[8][8];
+    battlefield.setLesCases(lesCases);
 
-    Plateau plateau = new Plateau();
-
-
-    for (int i = 0; i < 8; i++) {
-      for (int j = 0; j < 8; j++) {
-        Case thecase = new Case(i, j, VIDE);
-        plateau.getLesCases().add(thecase);
-        System.out.println(plateau.getLesCases().get((i + 1) * j).getX());
-      }
-      System.out.println("\n");
-    }
-
-    System.out.println(amiral1.getTableauJoueurs().get(torpilleur1).getDefenseur().getName());
+    Application.launch(AmiralVue.class,args);
   }
 }
