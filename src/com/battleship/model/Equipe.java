@@ -9,6 +9,7 @@ public class Equipe {
   private List<Joueur> listeJoueur;
   private HashMap<Navire, Equipage> assignationNavireEquipage;
   private static NomEquipe nomEquipe;
+  private Amiral amiral;
 
   public Equipe() {
     this.assignationNavireEquipage = new HashMap<>();
@@ -43,5 +44,15 @@ public class Equipe {
 
   public void setListeJoueur(List<Joueur> listeJoueur) {
     this.listeJoueur = listeJoueur;
+  }
+
+  public Amiral getAmiral()
+  {
+    return amiral;
+  }
+
+  public void setAmiral(Amiral amiral)
+  {
+    this.amiral = amiral;
   }
 }

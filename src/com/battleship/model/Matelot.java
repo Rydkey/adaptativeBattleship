@@ -9,9 +9,4 @@ public class Matelot extends Joueur
     super();
   }
 
-  public Matelot(List<Navire> naviresAssignes, Equipe equipe)
-  {
-    super(equipe);
-  }
-
 }

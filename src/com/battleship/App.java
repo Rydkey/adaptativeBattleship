@@ -1,58 +1,71 @@
 package com.battleship;
 
-import com.battleship.controller.AmiralController;
-import com.battleship.model.*;
+import com.battleship.model.Defenseur;
+import com.battleship.model.Equipe;
+import com.battleship.model.Matelot;
 import com.battleship.model.Navire;
-import com.battleship.model.Torpilleur;
-import com.battleship.vue.AmiralView;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import static com.battleship.model.Status.VIDE;
+//import com.battleship.vue.AmiralView;
 
-public class App extends Application {
+public class App extends Application
+{
+
+  public static final String VUE_JOUEUR  = "/fxml/joueurView.fxml";
+  public static final String VUE_AMIRAL  = "/fxml/amiralView.fxml";
+
+  public static void navireSetDefenseur(Equipe equipe, Navire navire, Matelot matelot)
+  {
+    equipe.getAssignationNavireEquipage().get(navire).setDefenseur((Defenseur) matelot);
+  }
+
+  public static void main(String[] args)
+  {
+    launch(args);
+  }
+
   @Override
-  public void start(Stage primaryStage) throws Exception {
-    primaryStage.setTitle("Hello World!");
-    Equipe equipeA = new Equipe(NomEquipe.EQUIPEA);
-    Equipe equipeB = new Equipe(NomEquipe.EQUIPEB);
-    Partie partie = new Partie();
-    for (int i = 0; i < 8; i++) {
-      if (i == 0) {
-        Amiral amiral1 = new Amiral();
-        amiral1.setName("Amiral A");
-        equipeA.getListeJoueur().add(amiral1);
-      } else {
-        Joueur joueur;
-        if (i < 3) {
-          if (equipeB.getListeJoueur().isEmpty()) {
-            joueur = new Amiral();
-            joueur.setName("Amiral B");
-          } else {
-            joueur = new Matelot();
-          }
-          equipeB.getListeJoueur().add(joueur);
-        } else {
-          joueur = new Matelot();
-          equipeA.getListeJoueur().add(joueur);
-        }
-        if (joueur.getName() != null) {
-          joueur.setName("M" + i);
-        }
-      }
-    }
-    Plateau plateauEquipeA = new Plateau();
-    Plateau plateauEquipeB = new Plateau();
-
-    partie.getPlateaux().put(equipeA,plateauEquipeA);
-    partie.getPlateaux().put(equipeB,plateauEquipeB);
-
-    AmiralController amiralController = new AmiralController(partie, primaryStage, equipeA);
+  public void start(Stage primaryStage) throws Exception
+  {
+//    Equipe equipeA = new Equipe(NomEquipe.EQUIPEA);
+//    Equipe equipeB = new Equipe(NomEquipe.EQUIPEB);
+//    Partie partie = new Partie();
+//    for (int i = 0; i < 8; i++) {
+//      if (i == 0) {
+//        Amiral amiral1 = new Amiral();
+//        amiral1.setName("Amiral A");
+//        equipeA.setAmiral(amiral1);
+//      } else {
+//        Joueur joueur;
+//        if (i < 3) {
+//          if (equipeB.getListeJoueur().isEmpty()) {
+//            joueur = new Amiral();
+//            joueur.setName("Amiral B");
+//            equipeB.setAmiral((Amiral) joueur);
+//          } else {
+//            joueur = new Matelot();
+//          }
+//          equipeB.getListeJoueur().add(joueur);
+//        } else {
+//          joueur = new Matelot();
+//          equipeA.getListeJoueur().add(joueur);
+//        }
+//        if (joueur.getName() != null) {
+//          joueur.setName("M" + i);
+//        }
+//      }
+//    }
+//    Plateau plateauEquipeA = new Plateau();
+//    Plateau plateauEquipeB = new Plateau();
+//
+//    partie.getPlateaux().put(equipeA, plateauEquipeA);
+//    partie.getPlateaux().put(equipeB, plateauEquipeB);
+//
+//    AmiralController amiralController = new AmiralController(partie, primaryStage, equipeA);
 
 //    AmiralView amiralView = new AmiralView();
 
@@ -88,19 +101,19 @@ public class App extends Application {
 //        }
 //      }
 
-    Plateau plateauA = new Plateau();
-    Plateau plateauB = new Plateau();
+//    Plateau plateauA = new Plateau();
+//    Plateau plateauB = new Plateau();
+//
+//    for (int i = 0; i < 8; i++) {
+//      for (int j = 0; j < 8; j++) {
+//        Case thecase = new Case(i, j, VIDE);
+//        plateauA.getLesCases()[i][j] = (thecase);
+//      }
+//    }
 
-    for (int i = 0; i < 8; i++) {
-      for (int j = 0; j < 8; j++) {
-        Case thecase = new Case(i, j, VIDE);
-        plateauA.getLesCases()[i][j] = (thecase);
-      }
-
-    }
-  }
-
-  public static void navireSetDefenseur(Equipe equipe, Navire navire, Matelot matelot) {
-    equipe.getAssignationNavireEquipage().get(navire).setDefenseur((Defenseur) matelot);
+    Parent root = FXMLLoader.load(getClass().getResource(VUE_AMIRAL));
+    primaryStage.setTitle("test");
+    primaryStage.setScene(new Scene(root, 1280, 720));
+    primaryStage.show();
   }
 }

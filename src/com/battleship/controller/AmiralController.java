@@ -2,40 +2,54 @@ package com.battleship.controller;
 
 import com.battleship.model.Equipe;
 import com.battleship.model.Partie;
-import com.battleship.vue.AmiralView;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCombination;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
-public class AmiralController implements EventHandler<MouseEvent> {
+//import com.battleship.vue.AmiralView;
 
-  private AmiralView amiralView;
+public class AmiralController implements EventHandler<MouseEvent>
+{
+
+  public AnchorPane anchorPane;
+  public Rectangle cuirasseRectangle;
+  public Rectangle croiseurRectangle1;
+  public GridPane gameMainGrid;
+  public Rectangle croiseurRectangle2;
+  public Rectangle torpilleurRectangle1;
+  public Rectangle torpilleurRectangle2;
+  public Rectangle torpilleurRectangle3;
+  public Rectangle sousMarinRectangle1;
+  public Rectangle sousMarinRectangle2;
+  public Rectangle sousMarinRectangle3;
+  public Rectangle sousMarinRectangle4;
+  public Text messageContainer;
+  public Button quit;
+  //  private AmiralView amiralView;
   private Partie partie;
   private Equipe equipe;
 
-  public AmiralController(Partie partie, Stage stage, Equipe equipe) {
-    this.equipe = equipe;
-    this.partie = partie;
-    BorderPane root = new BorderPane();
-    Scene scene;
-    scene = new Scene(root, Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight(), Color.BLACK);
-    stage.setScene(scene);
-    stage.setTitle("Test Amiral Vue");
-//    stage.getIcons().add(new Image("Assets/img/Schooner.png"));
-    stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-    stage.show();
-    this.amiralView = new AmiralView(stage, partie, equipe);
-    amiralView.setController(this);
-    amiralView.initStage();
+  @Override
+  public void handle(MouseEvent event)
+  {
+    System.out.println("mouse click detected! " + event.getSource());
   }
 
-  @Override
-  public void handle(MouseEvent event) {
+  public void endGame()
+  {
+    System.out.println("end");
+  }
+
+  public void click(MouseEvent event)
+  {
+    Node source = (Node)event.getSource() ;
+    Integer colIndex = GridPane.getColumnIndex(source);
+    Integer rowIndex = GridPane.getRowIndex(source);
+    System.out.printf(""+colIndex);
   }
 }
