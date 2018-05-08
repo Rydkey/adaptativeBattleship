@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.controller.AmiralController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.controller.AmiralPlacementController">
     <MenuBar prefHeight="25.0" prefWidth="812.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" text="Close" />
@@ -168,16 +168,16 @@
                 </font>
             </Label>
         </Pane>
-        <Rectangle fx:id="cuirasseRectangle" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="560.0" layoutY="40.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="134.0" />
-        <Rectangle fx:id="croiseurRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="560.0" layoutY="74.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="99.0" />
-        <Rectangle fx:id="croiseurRectangle2" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="560.0" layoutY="108.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="99.0" />
-        <Rectangle fx:id="torpilleurRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="560.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
-        <Rectangle fx:id="torpilleurRectangle2" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="629.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
-        <Rectangle fx:id="torpilleurRectangle3" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="698.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
-        <Rectangle fx:id="sousMarinRectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="560.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-        <Rectangle fx:id="sousMarinRectangle2" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="594.0" layoutY="176.0" onContextMenuRequested="#selectShip" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-        <Rectangle fx:id="sousMarinRectangle3" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="628.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-        <Rectangle fx:id="sousMarinRectangle4" arcHeight="5.0" arcWidth="5.0" fill="#ababab" height="29.0" layoutX="662.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+        <Rectangle fx:id="cuirasseRectangle" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="40.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="134.0" />
+        <Rectangle fx:id="croiseurRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="74.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="99.0" />
+        <Rectangle fx:id="croiseurRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="108.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="99.0" />
+        <Rectangle fx:id="torpilleurRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+        <Rectangle fx:id="torpilleurRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="629.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+        <Rectangle fx:id="torpilleurRectangle3" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="698.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+        <Rectangle fx:id="sousMarinRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+        <Rectangle fx:id="sousMarinRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="594.0" layoutY="176.0" onContextMenuRequested="#selectShip" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+        <Rectangle fx:id="sousMarinRectangle3" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="628.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+        <Rectangle fx:id="sousMarinRectangle4" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="662.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
         <Button fx:id="quit" layoutX="14.0" layoutY="505.0" mnemonicParsing="false" onAction="#endGame" text="Quitter" />
         <Text fx:id="messageContainer" layoutX="25.0" layoutY="557.0" lineSpacing="2.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false" wrappingWidth="500.0" />
     </Pane>

@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 
 //import com.battleship.vue.AmiralView;
 
-public class AmiralController extends BaseController implements Initializable {
+public class AmiralPlacementController extends BaseController implements Initializable {
 
   public AnchorPane anchorPane;
   public Rectangle cuirasseRectangle;
@@ -38,7 +38,9 @@ public class AmiralController extends BaseController implements Initializable {
   private Partie partie;
   private Equipe equipe;
   private HashMap<Rectangle, Navire> navireRectangleAssociation;
+  private HashMap<Pane, Case> paneCaseAssociation;
   private Rectangle shipSelected;
+  private int[] orientation = {-1, 1};
 
 
   public void endGame()
@@ -64,41 +66,71 @@ public class AmiralController extends BaseController implements Initializable {
 
   public EventHandler<MouseEvent> click()
   {
-    EventHandler<MouseEvent> mousePositionHandler = new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event)
-      {
-        Node source = (Node) event.getSource();
-        Integer colIndex = GridPane.getColumnIndex(source);
-        Integer rowIndex = GridPane.getRowIndex(source);
-        System.out.println("col : " + colIndex);
-        event.consume();
-      }
+    return event -> {
+      Node source = (Node) event.getSource();
+      Integer colIndex = GridPane.getColumnIndex(source);
+      Integer rowIndex = GridPane.getRowIndex(source);
+      event.consume();
     };
-    return mousePositionHandler;
   }
 
+  /*
+   * colorie les cases en fonction du bateau sélectionné
+   * */
+  private EventHandler<MouseEvent> drawShipPrevisqion()
+  {
+    return event -> {
+      if (shipSelected != null) {
+        emptyFill();
+        Navire navire = navireRectangleAssociation.get(shipSelected);
+        Node source = (Node) event.getSource();
+        for (int i = 0; i < navire.getTaille(); i++) {
+          /*récupère le pane sous la souris (si le pane est en 1:1, il faut récuperer le pane 11)*/
+          Pane temp = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1));
+          if (GridPane.getColumnIndex(source) + navire.getTaille() > 8) {
+          } else {
+            for (int j = 0; j < navire.getTaille(); j++) {
+              Pane tempA = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
+              tempA.setStyle("-fx-background-color: purple");
+            }
+          }
+        }
+      }
+    };
+  }
+
+  /*
+   * Affiche le bateau selectionné en vert et permet de choisir un bateau à placer.
+   * */
   public void selectShip(MouseEvent event)
   {
     Rectangle clicked = (Rectangle) event.getSource();
     Navire navireCorrespondant = navireRectangleAssociation.get(clicked);
     if (navireCorrespondant != null) {
       if (shipSelected != null) {
-        shipSelected.setFill(Color.GREY);
+        shipSelected.setFill(Color.BLUE);
       }
       clicked.setFill(Color.GREEN);
       shipSelected = clicked;
     }
   }
 
+  /*
+   * fonction d'initialisation
+   * */
   @Override
   public void initialize(URL location, ResourceBundle resources)
   {
     navireRectangleAssociation = new HashMap<>();
+    paneCaseAssociation = new HashMap<>();
     for (int i = 0; i < NB_CASES; i++)
       for (int j = 0; j < NB_CASES; j++) {
         Pane pane = new Pane();
+        Case laCase = new Case(i, j, Status.VIDE);
+        paneCaseAssociation.put(pane, laCase);
         pane.setOnMouseClicked(this.click());
+        pane.setOnMouseEntered(this.drawShipPrevisqion());
+        pane.setOnMouseExited(this.emptyFill());
         gameMainGrid.add(pane, i, j);
       }
     Cuirasse c1 = new Cuirasse();
@@ -121,5 +153,17 @@ public class AmiralController extends BaseController implements Initializable {
     navireRectangleAssociation.put(sousMarinRectangle2, s2);
     navireRectangleAssociation.put(sousMarinRectangle3, s3);
     navireRectangleAssociation.put(sousMarinRectangle4, s4);
+  }
+
+  private EventHandler<MouseEvent> emptyFill()
+  {
+    return event -> {
+      for (Node childen : gameMainGrid.getChildren()) {
+        Case tempCase = paneCaseAssociation.get(childen);
+        if (tempCase != null && tempCase.getStatus() == Status.VIDE) {
+          childen.setStyle("-fx-color: white");
+        }
+      }
+    };
   }
 }

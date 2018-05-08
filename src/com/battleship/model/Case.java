@@ -8,6 +8,7 @@ public class Case
 
   public Case()
   {
+    this.status = Status.VIDE;
   }
 
   public Case(int x, int y, Status status)

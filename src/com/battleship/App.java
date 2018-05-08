@@ -16,7 +16,7 @@ public class App extends Application
 {
 
   public static final String VUE_JOUEUR  = "/fxml/joueurView.fxml";
-  public static final String VUE_AMIRAL  = "/fxml/amiralView.fxml";
+  public static final String VUE_AMIRAL  = "/fxml/amiralPlacementView.fxml";
 
   public static void navireSetDefenseur(Equipe equipe, Navire navire, Matelot matelot)
   {
@@ -65,7 +65,7 @@ public class App extends Application
 //    partie.getPlateaux().put(equipeA, plateauEquipeA);
 //    partie.getPlateaux().put(equipeB, plateauEquipeB);
 //
-//    AmiralController amiralController = new AmiralController(partie, primaryStage, equipeA);
+//    AmiralPlacementController amiralController = new AmiralPlacementController(partie, primaryStage, equipeA);
 
 //    AmiralView amiralView = new AmiralView();
 
