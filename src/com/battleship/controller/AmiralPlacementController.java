@@ -40,7 +40,7 @@ public class AmiralPlacementController extends BaseController implements Initial
   private HashMap<Rectangle, Navire> navireRectangleAssociation;
   private HashMap<Pane, Case> paneCaseAssociation;
   private Rectangle shipSelected;
-  private int[] orientation = {-1, 1};
+  private boolean orientation;
 
 
   public void endGame()
@@ -87,11 +87,32 @@ public class AmiralPlacementController extends BaseController implements Initial
         for (int i = 0; i < navire.getTaille(); i++) {
           /*récupère le pane sous la souris (si le pane est en 1:1, il faut récuperer le pane 11)*/
           Pane temp = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1));
-          if (GridPane.getColumnIndex(source) + navire.getTaille() > 8) {
+          int j = 0;
+          if (orientation) {
+            if (GridPane.getColumnIndex(source) + navire.getTaille() > 8) {
+              while (GridPane.getColumnIndex(source) + j < 8) {
+                Pane tempA = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
+                tempA.setStyle("-fx-background-color: red");
+                j++;
+              }
+            } else {
+              for (j = 0; j < navire.getTaille(); j++) {
+                Pane tempA = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
+                tempA.setStyle("-fx-background-color: purple");
+              }
+            }
           } else {
-            for (int j = 0; j < navire.getTaille(); j++) {
-              Pane tempA = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
-              tempA.setStyle("-fx-background-color: purple");
+            if (GridPane.getRowIndex(source) + navire.getTaille() > 8) {
+              while (GridPane.getRowIndex(source) + j < 8) {
+                Pane tempA = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1 + j));
+                tempA.setStyle("-fx-background-color: red");
+                j++;
+              }
+            } else {
+              for (j = 0; j < navire.getTaille(); j++) {
+                Pane tempA = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1 + j));
+                tempA.setStyle("-fx-background-color: purple");
+              }
             }
           }
         }
@@ -123,6 +144,7 @@ public class AmiralPlacementController extends BaseController implements Initial
   {
     navireRectangleAssociation = new HashMap<>();
     paneCaseAssociation = new HashMap<>();
+    orientation = false;
     for (int i = 0; i < NB_CASES; i++)
       for (int j = 0; j < NB_CASES; j++) {
         Pane pane = new Pane();
