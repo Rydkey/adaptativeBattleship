@@ -12,8 +12,6 @@ public abstract class Navire implements NavireInterface
   private int recharge;
   private boolean pretATirrer;
 
-  private String name;
-
   public Navire()
   {
     this.caseOccupees = new ArrayList<>();
@@ -49,16 +47,6 @@ public abstract class Navire implements NavireInterface
   public void setCoule(boolean coule)
   {
     this.coule = coule;
-  }
-
-  public String getName()
-  {
-    return name;
-  }
-
-  public void setName(String name)
-  {
-    this.name = name;
   }
 
   public boolean isPretATirrer()
