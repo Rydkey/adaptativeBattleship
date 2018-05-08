@@ -5,6 +5,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -67,10 +69,7 @@ public class AmiralPlacementController extends BaseController implements Initial
   public EventHandler<MouseEvent> click()
   {
     return event -> {
-      Node source = (Node) event.getSource();
-      Integer colIndex = GridPane.getColumnIndex(source);
-      Integer rowIndex = GridPane.getRowIndex(source);
-      event.consume();
+
     };
   }
 
@@ -133,6 +132,14 @@ public class AmiralPlacementController extends BaseController implements Initial
       }
       clicked.setFill(Color.GREEN);
       shipSelected = clicked;
+    }
+  }
+
+  public void changeOrientation(KeyEvent event)
+  {
+    if (event.getCode() == KeyCode.R) {
+      orientation = !orientation;
+      event.consume();
     }
   }
 
