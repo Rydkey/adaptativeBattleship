@@ -6,6 +6,7 @@ import java.util.List;
 public abstract class Navire implements NavireInterface
 {
   private List<Case> caseOccupees;
+  private int taille;
   private boolean touche;
   private boolean coule;
   private int recharge;
@@ -16,6 +17,8 @@ public abstract class Navire implements NavireInterface
   public Navire()
   {
     this.caseOccupees = new ArrayList<>();
+    this.touche = false;
+    this.coule = false;
   }
 
   public List<Case> getCaseOccupees()
@@ -66,6 +69,22 @@ public abstract class Navire implements NavireInterface
   public void setPretATirrer(boolean pretATirrer)
   {
     this.pretATirrer = pretATirrer;
+  }
+
+  public int getTaille() {
+    return taille;
+  }
+
+  public void setTaille(int taille) {
+    this.taille = taille;
+  }
+
+  public int getRecharge() {
+    return recharge;
+  }
+
+  public void setRecharge(int recharge) {
+    this.recharge = recharge;
   }
 
   @Override

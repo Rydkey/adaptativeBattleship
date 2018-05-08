@@ -1,9 +1,12 @@
 package com.battleship.model;
 
-import com.battleship.model.Navire;
-
 public class Cuirasse extends Navire
 {
+  public Cuirasse() {
+    super();
+    setTaille(4);
+  }
+
   @Override
   public void deplace(int[] vecteur)
   {
