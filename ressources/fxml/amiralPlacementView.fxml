@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -180,63 +178,7 @@
         <Rectangle fx:id="sousMarinRectangle4" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="662.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
         <Button fx:id="quit" layoutX="14.0" layoutY="505.0" mnemonicParsing="false" onAction="#endGame" text="Quitter" />
         <Text fx:id="messageContainer" layoutX="25.0" layoutY="557.0" lineSpacing="2.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false" wrappingWidth="500.0" />
-      <Button fx:id="ready" layoutX="427.0" layoutY="505.0" mnemonicParsing="false" onMouseClicked="#ready" text="à l'attaque !" />
-    </Pane>
-    <Pane layoutX="550.0" layoutY="276.0" prefHeight="324.0" prefWidth="250.0" AnchorPane.topAnchor="276.0">
-        <opaqueInsets>
-            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-        </opaqueInsets>
-        <GridPane gridLinesVisible="true" layoutY="-1.0" prefHeight="324.0" prefWidth="250.0">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-                <Label text="Bateau" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                <Label text="Attaquant" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                <Label text="Defenseur" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                <Label text="CA1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <Label text="C1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                <Label text="C2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                <Label text="T1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                <Label text="T2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-                <Label text="S1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-                <Label text="S2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-                <Label text="S3" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
-                <Label text="S4" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-            </children>
-        </GridPane>
+      <Button fx:id="ready" layoutX="642.0" layoutY="356.0" mnemonicParsing="false" onMouseClicked="#ready" text="à l'attaque !" />
     </Pane>
 
 </AnchorPane>
