@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 //import com.battleship.vue.AmiralView;
@@ -38,6 +39,7 @@ public class AmiralPlacementController extends BaseController implements Initial
   public Rectangle sousMarinRectangle4;
   public Text messageContainer;
   public Button quit;
+  public Button ready;
   private Partie partie;
   private Equipe equipe;
   private HashMap<Rectangle, Navire> navireRectangleAssociation;
@@ -80,7 +82,7 @@ public class AmiralPlacementController extends BaseController implements Initial
           /*récupère le pane sous la souris (si le pane est en 1:1, il faut récuperer le pane 11)*/
           int j;
           if (orientation) {
-            if (GridPane.getColumnIndex(source) + navire.getTaille() < 8) {
+            if (GridPane.getColumnIndex(source) + navire.getTaille() <= 8) {
               for (j = 0; j < navire.getTaille(); j++) {
                 Pane pane = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
                 tempPaneList.add(pane);
@@ -89,7 +91,7 @@ public class AmiralPlacementController extends BaseController implements Initial
               }
             }
           } else {
-            if (GridPane.getRowIndex(source) + navire.getTaille() < 8) {
+            if (GridPane.getRowIndex(source) + navire.getTaille() <= 8) {
               for (j = 0; j < navire.getTaille(); j++) {
                 Pane pane = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1 + j));
                 tempPaneList.add(pane);
@@ -107,9 +109,26 @@ public class AmiralPlacementController extends BaseController implements Initial
           }
           shipSelected = null;
           refreshColor();
+          partyIsReady();
         }
       }
     };
+  }
+
+  private void partyIsReady()
+  {
+    boolean allShipPlaced = true;
+    Iterator<Rectangle> itr = navireRectangleAssociation.keySet().iterator();
+    while (itr.hasNext()) {
+      Rectangle rectangle = itr.next();
+      if (!unselectableShip.contains(rectangle)) {
+        allShipPlaced = false;
+        break;
+      }
+    }
+    if (allShipPlaced) {
+      ready.setVisible(true);
+    }
   }
 
   /*
@@ -222,6 +241,7 @@ public class AmiralPlacementController extends BaseController implements Initial
         pane.setOnMouseExited(this.refreshColor());
         gameMainGrid.add(pane, i, j);
       }
+    ready.setVisible(false);
     Cuirasse c1 = new Cuirasse();
     Croiseur cr1 = new Croiseur();
     Croiseur cr2 = new Croiseur();
@@ -258,5 +278,10 @@ public class AmiralPlacementController extends BaseController implements Initial
         }
       }
     };
+  }
+
+  public void ready(MouseEvent mouseEvent)
+  {
+
   }
 }

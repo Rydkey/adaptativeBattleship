@@ -180,6 +180,7 @@
         <Rectangle fx:id="sousMarinRectangle4" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="662.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
         <Button fx:id="quit" layoutX="14.0" layoutY="505.0" mnemonicParsing="false" onAction="#endGame" text="Quitter" />
         <Text fx:id="messageContainer" layoutX="25.0" layoutY="557.0" lineSpacing="2.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false" wrappingWidth="500.0" />
+      <Button fx:id="ready" layoutX="427.0" layoutY="505.0" mnemonicParsing="false" onMouseClicked="#ready" text="à l'attaque !" />
     </Pane>
     <Pane layoutX="550.0" layoutY="276.0" prefHeight="324.0" prefWidth="250.0" AnchorPane.topAnchor="276.0">
         <opaqueInsets>
