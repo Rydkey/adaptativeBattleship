@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" fx:id="anchorPane" onKeyPressed="#changeOrientation" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.controller.AmiralPlacementController">
     <MenuBar prefHeight="25.0" prefWidth="812.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,159 +30,298 @@
             <MenuItem mnemonicParsing="false" text="About" />
         </Menu>
     </MenuBar>
-    <Pane layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #ffffff; -fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0">
-        <GridPane gridLinesVisible="true" layoutX="65.0" layoutY="100.0" maxHeight="350.0" maxWidth="35.0" minHeight="350.0" minWidth="35.0" prefHeight="350.0" prefWidth="35.0" style="-fx-background-color: #ffffff;">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="A" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="B" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="C" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="D" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="E" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="F" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="G" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="H" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-        </GridPane>
-        <GridPane fx:id="gameMainGrid" gridLinesVisible="true" layoutX="100.0" layoutY="100.0" maxHeight="350.0" maxWidth="350.0" minHeight="350.0" minWidth="350.0" onMouseClicked="#click" prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: #ffffff;">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-        </GridPane>
-        <GridPane gridLinesVisible="true" layoutX="100.0" layoutY="65.0" maxHeight="35.0" maxWidth="350.0" minHeight="35.0" minWidth="350.0" prefHeight="35.0" prefWidth="350.0" style="-fx-background-color: #ffffff;">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="35.0" text="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="3" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="4" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="5" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="6" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="7" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="8" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-        </GridPane>
-        <Pane layoutX="550.0" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" prefHeight="250.0" prefWidth="250.0" style="-fx-background-color: #ffffff; -fx-border-color: black;">
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="250.0" text="Bateaux" textAlignment="CENTER">
-                <font>
-                    <Font size="18.0" />
-                </font>
-            </Label>
-        </Pane>
-        <Rectangle fx:id="cuirasseRectangle" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="40.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="134.0" />
-        <Rectangle fx:id="croiseurRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="74.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="99.0" />
-        <Rectangle fx:id="croiseurRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="108.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="99.0" />
-        <Rectangle fx:id="torpilleurRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
-        <Rectangle fx:id="torpilleurRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="629.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
-        <Rectangle fx:id="torpilleurRectangle3" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="698.0" layoutY="142.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
-        <Rectangle fx:id="sousMarinRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="560.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-        <Rectangle fx:id="sousMarinRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="594.0" layoutY="176.0" onContextMenuRequested="#selectShip" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-        <Rectangle fx:id="sousMarinRectangle3" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="628.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-        <Rectangle fx:id="sousMarinRectangle4" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" layoutX="662.0" layoutY="176.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-        <Button fx:id="quit" layoutX="14.0" layoutY="505.0" mnemonicParsing="false" onAction="#endGame" text="Quitter" />
-        <Text fx:id="messageContainer" layoutX="25.0" layoutY="557.0" lineSpacing="2.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false" wrappingWidth="500.0" />
-      <Button fx:id="ready" layoutX="642.0" layoutY="356.0" mnemonicParsing="false" onMouseClicked="#ready" text="à l'attaque !" />
-    </Pane>
+    <SplitPane dividerPositions="0.29797979797979796" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <items>
+            <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+                <children>
+                    <GridPane alignment="CENTER" layoutY="39.0" prefHeight="365.0" prefWidth="395.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                            <GridPane gridLinesVisible="true" maxHeight="350.0" maxWidth="35.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="35.0" style="-fx-background-color: #ffffff;" GridPane.rowIndex="1">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="35.0" text="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="6" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="7" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="8" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="9" GridPane.rowIndex="8">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="10" GridPane.rowIndex="9">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                            </GridPane>
+                            <GridPane gridLinesVisible="true" maxHeight="35.0" maxWidth="350.0" minHeight="35.0" minWidth="350.0" prefHeight="35.0" prefWidth="350.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="35.0" text="A" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="B" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="C" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="D" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="E" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="F" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="G" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="J" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="H" GridPane.columnIndex="7">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="I" GridPane.columnIndex="8">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                            </GridPane>
+                            <GridPane fx:id="gameMainGrid" gridLinesVisible="true" maxHeight="350.0" maxWidth="350.0" minHeight="350.0" minWidth="350.0" onMouseClicked="#placementShip" prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                            </GridPane>
+                        </children>
+                    </GridPane>
+                    <Button fx:id="quit" mnemonicParsing="false" onAction="#endGame" text="Quitter" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
+                    <Button fx:id="ready" mnemonicParsing="false" onMouseClicked="#ready" text="à l'attaque !" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                </children>
+            <padding>
+               <Insets bottom="10.0" top="10.0" />
+            </padding>
+            </AnchorPane>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                <children>
+                    <VBox alignment="CENTER" layoutY="-29.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="573.0" prefWidth="272.0" spacing="5.0" AnchorPane.bottomAnchor="-31.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-29.0">
+                        <children>
+                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #ffffff; -fx-border-color: black;">
+                                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0">
+                                    <children>
+                                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="250.0" text="Bateaux" textAlignment="CENTER">
+                                            <font>
+                                                <Font size="18.0" />
+                                            </font>
+                                        </Label>
+                                        <Rectangle fx:id="cuirasseRectangle" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="134.0">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin></Rectangle>
+                                        <Rectangle fx:id="croiseurRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="99.0">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin></Rectangle>
+                                        <Rectangle fx:id="croiseurRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="99.0">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin></Rectangle>
+                                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" VBox.vgrow="ALWAYS">
+                                            <children>
+                                                <Rectangle fx:id="torpilleurRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+                                                <Rectangle fx:id="torpilleurRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+                                                <Rectangle fx:id="torpilleurRectangle3" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+                                            </children>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                                        </HBox>
+                                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0">
+                                            <children>
+                                                <Rectangle fx:id="sousMarinRectangle3" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                                <Rectangle fx:id="sousMarinRectangle2" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onContextMenuRequested="#selectShip" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                                <Rectangle fx:id="sousMarinRectangle1" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                                <Rectangle fx:id="sousMarinRectangle4" arcHeight="5.0" arcWidth="5.0" fill="BLUE" height="29.0" onMouseClicked="#selectShip" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                            </children>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                                <VBox.margin>
+                                    <Insets />
+                                </VBox.margin>
+                            </Pane>
+                            <GridPane alignment="CENTER" gridLinesVisible="true" layoutY="-1.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <children>
+                                    <Label text="Bateau" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Label text="Attaquant" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Label text="Defenseur" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Label text="CA1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                    <Label text="C1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                    <Label text="C2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                    <Label text="T1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                                    <Label text="T2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                                    <Label text="S1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+                                    <Label text="S2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+                                    <Label text="S3" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                                    <Label text="S4" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <ChoiceBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                    <ChoiceBox prefHeight="37.0" prefWidth="83.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                                </children>
+                            </GridPane>
+
+                        </children>
+                    </VBox>
+                </children>
+            </AnchorPane>
+        </items>
+    </SplitPane>
 
 </AnchorPane>

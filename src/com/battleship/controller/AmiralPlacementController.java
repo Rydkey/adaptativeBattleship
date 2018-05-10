@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -47,6 +48,7 @@ public class AmiralPlacementController extends BaseController implements Initial
   private ArrayList<Rectangle> unselectableShip;
   private Rectangle shipSelected;
   private boolean orientation;
+  private Plateau plateau;
 
 
   public void endGame()
@@ -54,7 +56,7 @@ public class AmiralPlacementController extends BaseController implements Initial
     System.out.println("end");
   }
 
-//  public EventHandler<MouseEvent> click()
+//  public EventHandler<MouseEvent> placementShip()
 //  {
 //    EventHandler<MouseEvent> mousePositionHandler = new EventHandler<MouseEvent>() {
 //      @Override
@@ -70,7 +72,10 @@ public class AmiralPlacementController extends BaseController implements Initial
 //    return mousePositionHandler;
 //  }
 
-  public EventHandler<MouseEvent> click()
+  /**
+   * place le bateau sur le plateau.
+   */
+  public EventHandler<MouseEvent> placementShip()
   {
     return event -> {
       if (shipSelected != null) {
@@ -78,37 +83,15 @@ public class AmiralPlacementController extends BaseController implements Initial
         Node source = (Node) event.getSource();
         ArrayList<Pane> tempPaneList = new ArrayList<>();
         boolean positionable = true;
-        for (int i = 0; i < navire.getTaille(); i++) {
-          /*récupère le pane sous la souris (si le pane est en 1:1, il faut récuperer le pane 11)*/
-          int j;
-          if (orientation) {
-            if (GridPane.getColumnIndex(source) + navire.getTaille() <= 8) {
-              for (j = 0; j < navire.getTaille(); j++) {
-                Pane pane = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
-                tempPaneList.add(pane);
-                positionable = caseIsAcceccible(pane);
-                if (!positionable) break;
-              }
-            }
-          } else {
-            if (GridPane.getRowIndex(source) + navire.getTaille() <= 8) {
-              for (j = 0; j < navire.getTaille(); j++) {
-                Pane pane = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1 + j));
-                tempPaneList.add(pane);
-                positionable = caseIsAcceccible(pane);
-                if (!positionable) break;
-              }
-            }
-          }
-        }
+        positionable = isPositionable(navire, source, tempPaneList);
         if (positionable) {
           for (Pane pane : tempPaneList) {
             shipSelected.setFill(Color.GREY);
             paneCaseAssociation.get(pane).setStatus(Status.NAVIRE);
             unselectableShip.add(shipSelected);
+            navireRectangleAssociation.get(shipSelected).getCaseOccupees().add(paneCaseAssociation.get(pane));
           }
           shipSelected = null;
-          refreshColor();
           partyIsReady();
         }
       }
@@ -140,59 +123,105 @@ public class AmiralPlacementController extends BaseController implements Initial
       if (shipSelected != null) {
         Navire navire = navireRectangleAssociation.get(shipSelected);
         Node source = (Node) event.getSource();
-        for (int i = 0; i < navire.getTaille(); i++) {
-          /*récupère le pane sous la souris (si le pane est en 1:1, il faut récuperer le pane 11)*/
-          int j = 0;
-          if (orientation) {
-            if (GridPane.getColumnIndex(source) + navire.getTaille() > 8) {
-              while (GridPane.getColumnIndex(source) + j < 8) {
-                Pane tempA = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
-                tempA.setStyle("-fx-background-color: red");
-                j++;
-              }
-            } else {
-              for (j = 0; j < navire.getTaille(); j++) {
-                Pane tempA = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
-                if (caseIsAcceccible(tempA)) {
-                  tempA.setStyle("-fx-background-color: purple");
-                } else {
-                  tempA.setStyle("-fx-background-color: red");
-                }
-              }
-            }
+        ArrayList<Pane> tempPaneList = new ArrayList<>();
+        boolean positionable = true;
+        positionable = isPositionable(navire, source, tempPaneList);
+        for (Pane pane : tempPaneList) {
+          if (positionable) {
+            pane.setStyle("-fx-background-color: grey");
           } else {
-            if (GridPane.getRowIndex(source) + navire.getTaille() > 8) {
-              while (GridPane.getRowIndex(source) + j < 8) {
-                Pane tempA = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1 + j));
-                tempA.setStyle("-fx-background-color: red");
-                j++;
-              }
-            } else {
-              for (j = 0; j < navire.getTaille(); j++) {
-                Pane tempA = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1 + j));
-                if (caseIsAcceccible(tempA)) {
-                  tempA.setStyle("-fx-background-color: purple");
-                } else {
-                  tempA.setStyle("-fx-background-color: red");
-                }
-              }
-            }
+            pane.setStyle("-fx-background-color: red");
           }
         }
       }
     };
   }
 
-  private boolean caseIsAcceccible(Pane tempA)
+
+  /**
+   * renvoie vrai si le navire est positionnable.
+   *
+   * @param navire
+   * @param source
+   * @param tempPaneList
+   * @return
+   */
+  private boolean isPositionable(Navire navire, Node source, ArrayList<Pane> tempPaneList)
+  {
+    boolean positionable = true;
+    for (int i = 0; i <= navire.getTaille(); i++) {
+      int j;
+      if (orientation) { /*si orientation, horizontal*/
+        if (GridPane.getColumnIndex(source) + navire.getTaille() <= NB_CASES) {
+          for (j = 0; j < navire.getTaille(); j++) {
+            Pane pane = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * NB_CASES + (GridPane.getRowIndex(source) + 1));
+            tempPaneList.add(pane);
+            if (j == 0 || j == navire.getTaille() - 1) {
+              positionable = caseIsAcceccibleEdge(pane);
+            } else {
+              positionable = caseIsAcceccible(pane);
+            }
+            if (!positionable) break;
+          }
+        }
+      } else { /*sinon, vertical*/
+        if (GridPane.getRowIndex(source) + navire.getTaille() <= NB_CASES) {
+          for (j = 0; j < navire.getTaille(); j++) {
+            Pane pane = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * NB_CASES + (GridPane.getRowIndex(source) + 1 + j));
+            tempPaneList.add(pane);
+            if (j == 0 || j == navire.getTaille() - 1) {
+              positionable = caseIsAcceccibleEdge(pane);
+            } else {
+              positionable = caseIsAcceccible(pane);
+            }
+            if (!positionable) break;
+          }
+        }
+      }
+    }
+    return positionable;
+  }
+
+  private boolean caseIsAcceccible(Pane temp)
   {
     boolean result;
-    switch (paneCaseAssociation.get(tempA).getStatus()) {
+    switch (paneCaseAssociation.get(temp).getStatus()) {
       case VIDE:
         result = true;
         break;
       default:
         result = false;
         break;
+    }
+    return result;
+  }
+
+  private boolean caseIsAcceccibleEdge(Pane pane)
+  {
+    boolean result = caseIsAcceccible(pane);
+    int panePosition = (GridPane.getColumnIndex(pane)) * NB_CASES + (GridPane.getRowIndex(pane) + 1);
+    if (result) {
+      System.out.println("_________");
+      System.out.println(panePosition);
+      for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+          if (i != 0 || j != 0) {
+            /*
+             * vérifie si l'on est pas au bord
+             * Par exemple, 40 et 41 ne sont pas allignés.
+             * */
+            int tempPosition = (GridPane.getColumnIndex(pane) + j) * NB_CASES + (GridPane.getRowIndex(pane) + 1) + i;
+            if (tempPosition > 0 && tempPosition <= 100) {
+              if (tempPosition % 10 != 1) {
+                Pane temp = (Pane) gameMainGrid.getChildren().get(tempPosition);
+                temp.setStyle("-fx-background-color: pink");
+                result = caseIsAcceccible(temp);
+                if (!result) break;
+              }
+            }
+          }
+        }
+      }
     }
     return result;
   }
@@ -231,16 +260,21 @@ public class AmiralPlacementController extends BaseController implements Initial
     paneCaseAssociation = new HashMap<>();
     unselectableShip = new ArrayList<>();
     orientation = false;
-    for (int i = 0; i < NB_CASES; i++)
+    plateau = new Plateau();
+    for (int i = 0; i < NB_CASES; i++) {
       for (int j = 0; j < NB_CASES; j++) {
         Pane pane = new Pane();
+        Label label = new Label();
+
         Case laCase = new Case(i, j, Status.VIDE);
+        plateau.getLesCases()[i][j] = laCase;
         paneCaseAssociation.put(pane, laCase);
-        pane.setOnMouseClicked(this.click());
+        pane.setOnMouseClicked(this.placementShip());
         pane.setOnMouseEntered(this.drawShipPrevisqion());
         pane.setOnMouseExited(this.refreshColor());
         gameMainGrid.add(pane, i, j);
       }
+    }
     ready.setVisible(false);
     Cuirasse c1 = new Cuirasse();
     Croiseur cr1 = new Croiseur();
@@ -273,7 +307,7 @@ public class AmiralPlacementController extends BaseController implements Initial
           if (caseIsAcceccible((Pane) childen)) {
             childen.setStyle("-fx-color: white");
           } else {
-            childen.setStyle("-fx-background-color: grey");
+            childen.setStyle("-fx-background-color:  blue");
           }
         }
       }
