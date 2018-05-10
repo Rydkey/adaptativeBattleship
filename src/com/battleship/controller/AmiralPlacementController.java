@@ -148,30 +148,38 @@ public class AmiralPlacementController extends BaseController implements Initial
   private boolean isPositionable(Navire navire, Node source, ArrayList<Pane> tempPaneList)
   {
     boolean positionable = true;
-    for (int i = 0; i <= navire.getTaille(); i++) {
-      int j;
-      if (orientation) { /*si orientation, horizontal*/
-        if (GridPane.getColumnIndex(source) + navire.getTaille() <= NB_CASES) {
-          for (j = 0; j < navire.getTaille(); j++) {
-            Pane pane = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * NB_CASES + (GridPane.getRowIndex(source) + 1));
-            tempPaneList.add(pane);
-            positionable = caseIsAccessible(pane);
-            if (!positionable) break;
-          }
-        } else {
-          positionable = false;
+    int j = 0;
+    if (orientation) { /*si orientation, horizontal*/
+      if (GridPane.getColumnIndex(source) + navire.getTaille() <= NB_CASES) {
+        for (int i = 0; i < navire.getTaille(); i++) {
+          Pane pane = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + i) * NB_CASES + (GridPane.getRowIndex(source) + 1));
+          tempPaneList.add(pane);
+          positionable = caseIsAccessible(pane);
+          if (!positionable) break;
         }
-      } else { /*sinon, vertical*/
-        if (GridPane.getRowIndex(source) + navire.getTaille() <= NB_CASES) {
-          for (j = 0; j < navire.getTaille(); j++) {
-            Pane pane = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * NB_CASES + (GridPane.getRowIndex(source) + 1 + j));
-            tempPaneList.add(pane);
-            positionable = caseIsAccessible(pane);
-            if (!positionable) break;
-          }
-        } else {
-          positionable = false;
+      } else {
+        while (GridPane.getColumnIndex(source) + j < NB_CASES) {
+          Pane pane = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * 10 + (GridPane.getRowIndex(source) + 1));
+          tempPaneList.add(pane);
+          j++;
         }
+        positionable = false;
+      }
+    } else { /*sinon, vertical*/
+      if (GridPane.getRowIndex(source) + navire.getTaille() <= NB_CASES) {
+        for (int i = 0; i < navire.getTaille(); i++) {
+          Pane pane = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * NB_CASES + (GridPane.getRowIndex(source) + 1 + i));
+          tempPaneList.add(pane);
+          positionable = caseIsAccessible(pane);
+          if (!positionable) break;
+        }
+      } else {
+        while (GridPane.getRowIndex(source) + j < NB_CASES) {
+          Pane pane = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * 10 + (GridPane.getRowIndex(source) + 1 + j));
+          tempPaneList.add(pane);
+          j++;
+        }
+        positionable = false;
       }
     }
     return positionable;
@@ -205,10 +213,9 @@ public class AmiralPlacementController extends BaseController implements Initial
              * */
             int tempPosition = (GridPane.getColumnIndex(pane) + j) * NB_CASES + (GridPane.getRowIndex(pane) + 1) + i;
             if (tempPosition > 0 && tempPosition <= 100) {
-              if (!(tempPosition % NB_CASES == 0 && panePosition  % NB_CASES == 1)
+              if (!(tempPosition % NB_CASES == 0 && panePosition % NB_CASES == 1)
                   && !(tempPosition % NB_CASES == 1 && panePosition % NB_CASES == 0)) {
                 Pane temp = (Pane) gameMainGrid.getChildren().get(tempPosition);
-                temp.setStyle("-fx-background-color: pink");
                 result = caseVerification(temp);
                 if (!result) break;
               }
