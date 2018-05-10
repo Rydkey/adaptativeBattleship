@@ -117,14 +117,14 @@ public class AmiralPlacementController extends BaseController implements Initial
   /*
    * colorie les cases en fonction du bateau sélectionné
    * */
-  private EventHandler<MouseEvent> drawShipPrevisqion()
+  private EventHandler<MouseEvent> drawShipPrevision()
   {
     return event -> {
       if (shipSelected != null) {
         Navire navire = navireRectangleAssociation.get(shipSelected);
         Node source = (Node) event.getSource();
         ArrayList<Pane> tempPaneList = new ArrayList<>();
-        boolean positionable = true;
+        boolean positionable;
         positionable = isPositionable(navire, source, tempPaneList);
         for (Pane pane : tempPaneList) {
           if (positionable) {
@@ -163,6 +163,8 @@ public class AmiralPlacementController extends BaseController implements Initial
             }
             if (!positionable) break;
           }
+        } else {
+          positionable = false;
         }
       } else { /*sinon, vertical*/
         if (GridPane.getRowIndex(source) + navire.getTaille() <= NB_CASES) {
@@ -176,6 +178,8 @@ public class AmiralPlacementController extends BaseController implements Initial
             }
             if (!positionable) break;
           }
+        } else {
+          positionable = false;
         }
       }
     }
@@ -201,8 +205,6 @@ public class AmiralPlacementController extends BaseController implements Initial
     boolean result = caseIsAcceccible(pane);
     int panePosition = (GridPane.getColumnIndex(pane)) * NB_CASES + (GridPane.getRowIndex(pane) + 1);
     if (result) {
-      System.out.println("_________");
-      System.out.println(panePosition);
       for (int i = -1; i <= 1; i++) {
         for (int j = -1; j <= 1; j++) {
           if (i != 0 || j != 0) {
@@ -212,12 +214,10 @@ public class AmiralPlacementController extends BaseController implements Initial
              * */
             int tempPosition = (GridPane.getColumnIndex(pane) + j) * NB_CASES + (GridPane.getRowIndex(pane) + 1) + i;
             if (tempPosition > 0 && tempPosition <= 100) {
-              if (tempPosition % 10 != 1) {
                 Pane temp = (Pane) gameMainGrid.getChildren().get(tempPosition);
                 temp.setStyle("-fx-background-color: pink");
                 result = caseIsAcceccible(temp);
                 if (!result) break;
-              }
             }
           }
         }
@@ -270,7 +270,7 @@ public class AmiralPlacementController extends BaseController implements Initial
         plateau.getLesCases()[i][j] = laCase;
         paneCaseAssociation.put(pane, laCase);
         pane.setOnMouseClicked(this.placementShip());
-        pane.setOnMouseEntered(this.drawShipPrevisqion());
+        pane.setOnMouseEntered(this.drawShipPrevision());
         pane.setOnMouseExited(this.refreshColor());
         gameMainGrid.add(pane, i, j);
       }
