@@ -156,11 +156,7 @@ public class AmiralPlacementController extends BaseController implements Initial
           for (j = 0; j < navire.getTaille(); j++) {
             Pane pane = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * NB_CASES + (GridPane.getRowIndex(source) + 1));
             tempPaneList.add(pane);
-            if (j == 0 || j == navire.getTaille() - 1) {
-              positionable = caseIsAcceccibleEdge(pane);
-            } else {
-              positionable = caseIsAcceccible(pane);
-            }
+            positionable = caseIsAcceccible(pane);
             if (!positionable) break;
           }
         } else {
@@ -171,11 +167,7 @@ public class AmiralPlacementController extends BaseController implements Initial
           for (j = 0; j < navire.getTaille(); j++) {
             Pane pane = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * NB_CASES + (GridPane.getRowIndex(source) + 1 + j));
             tempPaneList.add(pane);
-            if (j == 0 || j == navire.getTaille() - 1) {
-              positionable = caseIsAcceccibleEdge(pane);
-            } else {
-              positionable = caseIsAcceccible(pane);
-            }
+            positionable = caseIsAcceccible(pane);
             if (!positionable) break;
           }
         } else {
@@ -186,7 +178,7 @@ public class AmiralPlacementController extends BaseController implements Initial
     return positionable;
   }
 
-  private boolean caseIsAcceccible(Pane temp)
+  private boolean caseVerification(Pane temp)
   {
     boolean result;
     switch (paneCaseAssociation.get(temp).getStatus()) {
@@ -200,9 +192,9 @@ public class AmiralPlacementController extends BaseController implements Initial
     return result;
   }
 
-  private boolean caseIsAcceccibleEdge(Pane pane)
+  private boolean caseIsAcceccible(Pane pane)
   {
-    boolean result = caseIsAcceccible(pane);
+    boolean result = caseVerification(pane);
     int panePosition = (GridPane.getColumnIndex(pane)) * NB_CASES + (GridPane.getRowIndex(pane) + 1);
     if (result) {
       for (int i = -1; i <= 1; i++) {
@@ -214,10 +206,10 @@ public class AmiralPlacementController extends BaseController implements Initial
              * */
             int tempPosition = (GridPane.getColumnIndex(pane) + j) * NB_CASES + (GridPane.getRowIndex(pane) + 1) + i;
             if (tempPosition > 0 && tempPosition <= 100) {
-                Pane temp = (Pane) gameMainGrid.getChildren().get(tempPosition);
-                temp.setStyle("-fx-background-color: pink");
-                result = caseIsAcceccible(temp);
-                if (!result) break;
+              Pane temp = (Pane) gameMainGrid.getChildren().get(tempPosition);
+              temp.setStyle("-fx-background-color: pink");
+              result = caseVerification(temp);
+              if (!result) break;
             }
           }
         }
@@ -264,8 +256,6 @@ public class AmiralPlacementController extends BaseController implements Initial
     for (int i = 0; i < NB_CASES; i++) {
       for (int j = 0; j < NB_CASES; j++) {
         Pane pane = new Pane();
-        Label label = new Label();
-
         Case laCase = new Case(i, j, Status.VIDE);
         plateau.getLesCases()[i][j] = laCase;
         paneCaseAssociation.put(pane, laCase);
@@ -304,7 +294,7 @@ public class AmiralPlacementController extends BaseController implements Initial
       for (Node childen : gameMainGrid.getChildren()) {
         Case tempCase = paneCaseAssociation.get(childen);
         if (tempCase != null) {
-          if (caseIsAcceccible((Pane) childen)) {
+          if (caseVerification((Pane) childen)) {
             childen.setStyle("-fx-color: white");
           } else {
             childen.setStyle("-fx-background-color:  blue");
