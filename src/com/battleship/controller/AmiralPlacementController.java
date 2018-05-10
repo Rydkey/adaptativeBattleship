@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -156,7 +155,7 @@ public class AmiralPlacementController extends BaseController implements Initial
           for (j = 0; j < navire.getTaille(); j++) {
             Pane pane = (Pane) gameMainGrid.getChildren().get((GridPane.getColumnIndex(source) + j) * NB_CASES + (GridPane.getRowIndex(source) + 1));
             tempPaneList.add(pane);
-            positionable = caseIsAcceccible(pane);
+            positionable = caseIsAccessible(pane);
             if (!positionable) break;
           }
         } else {
@@ -167,7 +166,7 @@ public class AmiralPlacementController extends BaseController implements Initial
           for (j = 0; j < navire.getTaille(); j++) {
             Pane pane = (Pane) gameMainGrid.getChildren().get(GridPane.getColumnIndex(source) * NB_CASES + (GridPane.getRowIndex(source) + 1 + j));
             tempPaneList.add(pane);
-            positionable = caseIsAcceccible(pane);
+            positionable = caseIsAccessible(pane);
             if (!positionable) break;
           }
         } else {
@@ -192,7 +191,7 @@ public class AmiralPlacementController extends BaseController implements Initial
     return result;
   }
 
-  private boolean caseIsAcceccible(Pane pane)
+  private boolean caseIsAccessible(Pane pane)
   {
     boolean result = caseVerification(pane);
     int panePosition = (GridPane.getColumnIndex(pane)) * NB_CASES + (GridPane.getRowIndex(pane) + 1);
@@ -206,13 +205,17 @@ public class AmiralPlacementController extends BaseController implements Initial
              * */
             int tempPosition = (GridPane.getColumnIndex(pane) + j) * NB_CASES + (GridPane.getRowIndex(pane) + 1) + i;
             if (tempPosition > 0 && tempPosition <= 100) {
-              Pane temp = (Pane) gameMainGrid.getChildren().get(tempPosition);
-              temp.setStyle("-fx-background-color: pink");
-              result = caseVerification(temp);
-              if (!result) break;
+              if (!(tempPosition % NB_CASES == 0 && panePosition  % NB_CASES == 1)
+                  && !(tempPosition % NB_CASES == 1 && panePosition % NB_CASES == 0)) {
+                Pane temp = (Pane) gameMainGrid.getChildren().get(tempPosition);
+                temp.setStyle("-fx-background-color: pink");
+                result = caseVerification(temp);
+                if (!result) break;
+              }
             }
           }
         }
+        if (!result) break;
       }
     }
     return result;
