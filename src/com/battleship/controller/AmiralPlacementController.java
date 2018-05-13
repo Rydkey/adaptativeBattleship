@@ -50,6 +50,8 @@ public class AmiralPlacementController extends BaseController implements Initial
   private Plateau plateau;
 
 
+
+
   public void endGame()
   {
     System.out.println("end");
@@ -92,6 +94,9 @@ public class AmiralPlacementController extends BaseController implements Initial
           }
           shipSelected = null;
           partyIsReady();
+          //System.out.println(navireRectangleAssociation);
+          //System.out.println(paneCaseAssociation);
+          //System.out.println(navire.getCaseOccupees());
         }
       }
     };

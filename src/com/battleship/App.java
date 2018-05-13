@@ -111,7 +111,10 @@ public class App extends Application
 //      }
 //    }
 
-    Parent root = FXMLLoader.load(getClass().getResource(VUE_AMIRAL));
+    /*amiral view*/
+    //Parent root = FXMLLoader.load(getClass().getResource(VUE_AMIRAL));
+    /*player view*/
+    Parent root = FXMLLoader.load(getClass().getResource(VUE_JOUEUR));
     primaryStage.setTitle("test");
     primaryStage.setScene(new Scene(root, 1280, 720));
     primaryStage.show();
