@@ -64,8 +64,8 @@ public class JoueurController extends BaseController implements Initializable
     orientation = false;
     ourPlateau = new Plateau();
     ennemyPlateau = new Plateau();
-    for (int i = 0; i < 8; i++) {
-      for (int j = 0; j < 8; j++) {
+    for (int i = 0; i < NB_CASES; i++) {
+      for (int j = 0; j < NB_CASES; j++) {
         Pane ourPane = new Pane();
         Pane ennemyPane = new Pane();
         Case ourCase = new Case(i, j, Status.VIDE);
@@ -154,9 +154,9 @@ public class JoueurController extends BaseController implements Initializable
         for(Case laCase : shipSelected.getCaseOccupees()){
           for(int i = -1;i<2;i++){
             for(int j = -1; j<2;j++){
-              if(laCase.getX()+i < 8 && laCase.getX()+i > -1 && laCase.getY()+j<8 && laCase.getY()+j > -1){
-                //System.out.println((laCase.getY()+i) * 8 + laCase.getX()+j+1);
-                Pane ennemyPane = (Pane) ennemiesGameGrid.getChildren().get((laCase.getX()+i) * 8 + laCase.getY()+j+1);
+              if(laCase.getX()+i < NB_CASES && laCase.getX()+i > -1 && laCase.getY()+j<NB_CASES && laCase.getY()+j > -1){
+                //System.out.println((laCase.getY()+i) * NB_CASES + laCase.getX()+j+1);
+                Pane ennemyPane = (Pane) ennemiesGameGrid.getChildren().get((laCase.getX()+i) * NB_CASES + laCase.getY()+j+1);
                 //System.out.println(ennemyPane);
                 ennemyPane.setStyle("-fx-background-color:  orange");
               }
