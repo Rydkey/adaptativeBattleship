@@ -2,9 +2,9 @@ package com.battleship.controller;
 
 import com.battleship.model.*;
 import javafx.event.EventHandler;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -18,12 +18,12 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 //import com.battleship.vue.AmiralView;
 
-public class AmiralPlacementController extends BaseController implements Initializable {
+public class AmiralPlacementController extends BaseController
+{
 
   public AnchorPane anchorPane;
   public Rectangle cuirasseRectangle;
@@ -40,6 +40,8 @@ public class AmiralPlacementController extends BaseController implements Initial
   public Text messageContainer;
   public Button quit;
   public Button ready;
+  public GridPane assigniationGrid;
+  Matelot joueurs[] = new Matelot[6];
   private Partie partie;
   private Equipe equipe;
   private HashMap<Rectangle, Navire> navireRectangleAssociation;
@@ -48,9 +50,6 @@ public class AmiralPlacementController extends BaseController implements Initial
   private Rectangle shipSelected;
   private boolean orientation;
   private Plateau plateau;
-
-
-
 
   public void endGame()
   {
@@ -83,7 +82,7 @@ public class AmiralPlacementController extends BaseController implements Initial
         Navire navire = navireRectangleAssociation.get(shipSelected);
         Node source = (Node) event.getSource();
         ArrayList<Pane> tempPaneList = new ArrayList<>();
-        boolean positionable = true;
+        boolean positionable;
         positionable = isPositionable(navire, source, tempPaneList);
         if (positionable) {
           for (Pane pane : tempPaneList) {
@@ -105,9 +104,7 @@ public class AmiralPlacementController extends BaseController implements Initial
   private void partyIsReady()
   {
     boolean allShipPlaced = true;
-    Iterator<Rectangle> itr = navireRectangleAssociation.keySet().iterator();
-    while (itr.hasNext()) {
-      Rectangle rectangle = itr.next();
+    for (Rectangle rectangle : navireRectangleAssociation.keySet()) {
       if (!unselectableShip.contains(rectangle)) {
         allShipPlaced = false;
         break;
@@ -141,6 +138,12 @@ public class AmiralPlacementController extends BaseController implements Initial
     };
   }
 
+  private EventHandler<MouseEvent> getOpPlayer()
+  {
+    return event -> {
+
+    };
+  }
 
   /**
    * renvoie vrai si le navire est positionnable.
@@ -190,23 +193,10 @@ public class AmiralPlacementController extends BaseController implements Initial
     return positionable;
   }
 
-  private boolean caseVerification(Pane temp)
-  {
-    boolean result;
-    switch (paneCaseAssociation.get(temp).getStatus()) {
-      case VIDE:
-        result = true;
-        break;
-      default:
-        result = false;
-        break;
-    }
-    return result;
-  }
 
   private boolean caseIsAccessible(Pane pane)
   {
-    boolean result = caseVerification(pane);
+    boolean result = caseVerification(pane, paneCaseAssociation);
     int panePosition = (GridPane.getColumnIndex(pane)) * NB_CASES + (GridPane.getRowIndex(pane) + 1);
     if (result) {
       for (int i = -1; i <= 1; i++) {
@@ -221,7 +211,7 @@ public class AmiralPlacementController extends BaseController implements Initial
               if (!(tempPosition % NB_CASES == 0 && panePosition % NB_CASES == 1)
                   && !(tempPosition % NB_CASES == 1 && panePosition % NB_CASES == 0)) {
                 Pane temp = (Pane) gameMainGrid.getChildren().get(tempPosition);
-                result = caseVerification(temp);
+                result = caseVerification(temp, paneCaseAssociation);
                 if (!result) break;
               }
             }
@@ -280,6 +270,17 @@ public class AmiralPlacementController extends BaseController implements Initial
         gameMainGrid.add(pane, i, j);
       }
     }
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 10; j++) {
+        ComboBox<Matelot> combo = new ComboBox<>();
+        if (i == 0) {
+//          combo.setOnMouseClicked();
+        } else {
+
+        }
+        assigniationGrid.add(combo, i, j);
+      }
+    }
     ready.setVisible(false);
     Cuirasse c1 = new Cuirasse();
     Croiseur cr1 = new Croiseur();
@@ -291,6 +292,11 @@ public class AmiralPlacementController extends BaseController implements Initial
     SousMarin s2 = new SousMarin();
     SousMarin s3 = new SousMarin();
     SousMarin s4 = new SousMarin();
+
+    for (int i = 0; i < 6; i++) {
+      joueurs[i] = new Matelot();
+    }
+
     navireRectangleAssociation.put(cuirasseRectangle, c1);
     navireRectangleAssociation.put(croiseurRectangle1, cr1);
     navireRectangleAssociation.put(croiseurRectangle2, cr2);
@@ -309,7 +315,7 @@ public class AmiralPlacementController extends BaseController implements Initial
       for (Node childen : gameMainGrid.getChildren()) {
         Case tempCase = paneCaseAssociation.get(childen);
         if (tempCase != null) {
-          if (caseVerification((Pane) childen)) {
+          if (caseVerification((Pane) childen, paneCaseAssociation)) {
             childen.setStyle("-fx-color: white");
           } else {
             childen.setStyle("-fx-background-color:  blue");
