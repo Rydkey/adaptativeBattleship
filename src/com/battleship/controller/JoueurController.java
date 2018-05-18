@@ -44,14 +44,14 @@ public class JoueurController extends BaseController implements Initializable
   private ArrayList<Rectangle> unselectableShip;
   private Navire shipSelected;
   private boolean orientation;
+  private boolean sameX;
   private Plateau ourPlateau;
   private Plateau ennemyPlateau;
   private Boolean positionable = false;
   private Equipe e = new Equipe();
   private ArrayList<Joueur> lJ = new ArrayList<>();
-  private ArrayList<Pane> tempPaneList = new ArrayList<>();
+  private ArrayList<Pane> actionPaneList = new ArrayList<>();
   private HashMap<Navire,Equipage> lE = new HashMap<>();
-
 
   /*
    * fonction d'initialisation
@@ -76,7 +76,10 @@ public class JoueurController extends BaseController implements Initializable
         ennemyPlateau.getLesCases()[i][j] = ennemyCase;
         ourPaneCaseAssociation.put(ourPane, ourCase);
         ennemyPaneCaseAssociation.put(ennemyPane, ennemyCase);
-        if(i ==1 && (j==1 || j==3 || j==5 || j==7)){
+        if(i ==1 && (j==1 || j==3  || j==7)){
+          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
+        }
+        if(i ==4 && j==5){
           ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
         }
         if(i ==5 && (j==3 || j==4 || j==5 || j==6)){
@@ -109,7 +112,7 @@ public class JoueurController extends BaseController implements Initializable
     SousMarin s2 = new SousMarin();
     s2.getCaseOccupees().add(ourPlateau.getLesCases()[1][3]);
     SousMarin s3 = new SousMarin();
-    s3.getCaseOccupees().add(ourPlateau.getLesCases()[1][5]);
+    s3.getCaseOccupees().add(ourPlateau.getLesCases()[4][5]);
     SousMarin s4 = new SousMarin();
     s4.getCaseOccupees().add(ourPlateau.getLesCases()[1][7]);
 
@@ -158,15 +161,24 @@ public class JoueurController extends BaseController implements Initializable
       Pane pane = (Pane)event.getSource();
       Navire shipSelectedTemp = getNavireOfCase(pane);
       Node source = (Node) event.getSource();
-      //ArrayList<Pane> tempPaneList = new ArrayList<>();
+      int yPosition = ourGameGrid.getRowIndex(source);
+      int xPosition = ourGameGrid.getColumnIndex(source);
+      int index = xPosition * NB_CASES + yPosition + 1;
+      List<Case> newCase;
       if (shipSelected != null) {
+        int xPositionNav = shipSelected.getCaseOccupees().get(0).getX();
+        int yPositionNav = shipSelected.getCaseOccupees().get(0).getY();
+        if(actionPaneList.contains(pane)){
+
+        }
         shipSelected = null;
       }else{
+        actionPaneList.clear();
         if(shipSelectedTemp != null){
           if(lE.get(shipSelectedTemp).getDefenseur().getName().equals("d1")) {
             shipSelected = shipSelectedTemp;
-            isPositionable(shipSelected,source);
             System.out.println(shipSelected);
+            isPositionable(shipSelected,source);
           }else{
             System.out.println("Not your ship");
           }
@@ -194,10 +206,17 @@ public class JoueurController extends BaseController implements Initializable
 
   class refreshView extends TimerTask {
     public void run() {
+      for (Pane pane : actionPaneList) {
+        if (positionable) {
+          pane.setStyle("-fx-background-color: grey");
+        } else {
+          pane.setStyle("-fx-background-color: red");
+        }
+      }
       for (Node children : ourGameGrid.getChildren() ) {
         Case tempCase = ourPaneCaseAssociation.get(children);
         if (tempCase != null) {
-          if (caseVerification((Pane) children)) {
+          if (caseVerification((Pane) children) && !actionPaneList.contains(children)) {
             children.setStyle("-fx-color: white");
           } else {
             // Getting a Set of Key-value pairs
@@ -225,13 +244,6 @@ public class JoueurController extends BaseController implements Initializable
               }
             }
           }
-        }
-      }
-      for (Pane pane : tempPaneList) {
-        if (positionable) {
-          pane.setStyle("-fx-background-color: grey");
-        } else {
-          pane.setStyle("-fx-background-color: red");
         }
       }
     }
@@ -275,10 +287,10 @@ public class JoueurController extends BaseController implements Initializable
       if (shipSelected != null) {
         Navire navire = shipSelected;
         Node source = (Node) event.getSource();
-        ArrayList<Pane> tempPaneList = new ArrayList<>();
+        ArrayList<Pane> actionPaneList = new ArrayList<>();
         boolean positionable;
-        positionable = isPositionable(navire, source, tempPaneList);
-        for (Pane pane : tempPaneList) {
+        positionable = isPositionable(navire, source, actionPaneList);
+        for (Pane pane : actionPaneList) {
           if (positionable) {
             pane.setStyle("-fx-background-color: grey");
           } else {
@@ -292,16 +304,16 @@ public class JoueurController extends BaseController implements Initializable
 
   private void isPositionable(Navire navire, Node source)
   {
-    int yPosition = ourGameGrid.getRowIndex(source);
-    int xPosition = ourGameGrid.getColumnIndex(source);
-    int movement = 0;
+    //int yPosition = ourGameGrid.getRowIndex(source);
+    //int xPosition = ourGameGrid.getColumnIndex(source);
     int panePosition;
-    int previousPanePosition = -1;
-    System.out.println(yPosition);
-    System.out.println(xPosition);
-    boolean movable = false;
-    boolean sameShip = true;
-    for(Case laCase : navire.getCaseOccupees()){
+    int[] listMovement = {1,-1,NB_CASES,-NB_CASES};
+    sameX = true;
+    System.out.println("click position");
+     ArrayList<Pane> tempPaneList = new ArrayList<>();
+    //boolean movable = true;
+    //boolean sameShip = true;
+    /*for(Case laCase : navire.getCaseOccupees()){
       System.out.println(laCase.getX());
       System.out.println(laCase.getY());
       if(laCase.getX() == xPosition){
@@ -319,39 +331,70 @@ public class JoueurController extends BaseController implements Initializable
       if(laCase.getY() == yPosition){
         if(laCase.getX() == xPosition+1){
           movable = true;
-          movement = -8;
+          movement = -NB_CASES;
           break;
         }
         if(laCase.getX() == xPosition -1)
           {
             movable = true;
-            movement = 8;
+            movement = NB_CASES;
             break;
           }
         }
-    }
-    if(movable){
-      for(Case laCase : navire.getCaseOccupees()){
-        panePosition = laCase.getX() * 8 + laCase.getY() + 1 + movement;
-        System.out.println(panePosition);
-        System.out.println(previousPanePosition);
-        sameShip = (panePosition == previousPanePosition);
-        previousPanePosition = laCase.getX() * 8 + laCase.getY() + 1;
-        Pane pane = (Pane) ourGameGrid.getChildren().get(panePosition);
-        if(!ourPaneCaseAssociation.get(pane).getStatus().equals(Status.VIDE) && !sameShip){
-          break;
-        }else{
-          positionable = true;
-          //pane.setStyle("-fx-background-color:  yellow");
-          //ourPaneCaseAssociation.get(previousPane).setStatus(Status.VIDE);
-          //ourPaneCaseAssociation.get(pane).setStatus(Status.NAVIRE);
-          tempPaneList.add(pane);
+    }*/
+      for (int move : listMovement){
+        int xCoord = -1;
+        for(Case laCase : navire.getCaseOccupees()){
+          if(sameX){
+            if(xCoord==-1){
+              xCoord = laCase.getX();
+            }else{
+              sameX = (xCoord == laCase.getX());
+              xCoord = laCase.getX();
+            }
+          }
+          panePosition = laCase.getX() * NB_CASES + laCase.getY() + 1 + move;
+          Pane pane = (Pane) ourGameGrid.getChildren().get(panePosition);
+          if(ourPaneCaseAssociation.get(pane).getStatus().equals(Status.VIDE)){
+            tempPaneList.add(pane);
+          }
         }
+        System.out.println("sameX : "+sameX);
+        if(Math.abs(move) == 1){
+          if(sameX){
+            if(tempPaneList.size() == Math.abs(move)){
+              for (Pane pane:tempPaneList
+                  ) {
+                actionPaneList.add(pane);
+              }
+            }
+          }else{
+            if(tempPaneList.size() == navire.getCaseOccupees().size()){
+              for (Pane pane:tempPaneList
+                  ) {
+                actionPaneList.add(pane);
+              }
+            }
+          }
+        }else{
+          if(sameX){
+            if(tempPaneList.size() == navire.getCaseOccupees().size()){
+              for (Pane pane:tempPaneList
+                  ) {
+                actionPaneList.add(pane);
+              }
+            }
+          }else{
+            if(tempPaneList.size() == 1){
+              for (Pane pane:tempPaneList
+                  ) {
+                actionPaneList.add(pane);
+              }
+            }
+          }
+        }
+        tempPaneList.clear();
       }
-    }
-    System.out.println(tempPaneList);
-    System.out.println(positionable);
-    //return positionable;
   }
 
 
