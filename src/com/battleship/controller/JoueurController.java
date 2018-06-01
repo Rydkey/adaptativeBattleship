@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class JoueurController extends BaseController implements Initializable
@@ -130,7 +131,9 @@ public class JoueurController extends BaseController implements Initializable
     lJ.add(a1);
     Defenseur d1 = new Defenseur();
     d1.setName("d1");
-    lJ.add(d1);
+    Defenseur d2 = new Defenseur();
+    d2.setName("d2");
+    lJ.add(d2);
     Attaquant a2 = new Attaquant();
     a2.setName("a2");
     lJ.add(a2);
@@ -138,7 +141,7 @@ public class JoueurController extends BaseController implements Initializable
     Equipage e1 = new Equipage(a1, d1);
     lE.put(s1, e1);
     lE.put(s2, e1);
-    Equipage e2 = new Equipage(a2, d1);
+    Equipage e2 = new Equipage(a2, d2);
     lE.put(s3, e2);
     lE.put(s4, e2);
     lE.put(c1, e1);
@@ -161,11 +164,49 @@ public class JoueurController extends BaseController implements Initializable
       int yPosition = GridPane.getRowIndex(source);
       int xPosition = GridPane.getColumnIndex(source);
       int index = xPosition * NB_CASES + yPosition + 1;
-      List<Case> newCase;
+      List<Case> newCase = new ArrayList<>();
+      int movement;
       if (shipSelected != null) {
-        int xPositionNav = shipSelected.getCaseOccupees().get(0).getX();
-        int yPositionNav = shipSelected.getCaseOccupees().get(0).getY();
+        //System.out.println(pane);
+        //System.out.println(actionPaneList.contains(pane));
+        if (actionPaneList.contains(pane)) {
+          /*System.out.println(yPosition);
+          System.out.println(xPosition);
+          System.out.println(shipSelected.getCaseOccupees().get(0).getX());
+          System.out.println(shipSelected.getCaseOccupees().get(0).getY());*/
+          //System.out.println(shipSelected.getCaseOccupees());
+          if (xPosition == shipSelected.getCaseOccupees().get(0).getX()) {
+            //System.out.println("sameX");
+            movement = (yPosition - shipSelected.getCaseOccupees().get(0).getY()) / Math.abs(yPosition - shipSelected.getCaseOccupees().get(0).getY());
+            for (Case oldCase : shipSelected.getCaseOccupees()
+                ) {
+              newCase.add(ourPlateau.getLesCases()[oldCase.getX()][oldCase.getY() + movement]);
+              if (!newCase.contains(oldCase)) {
+                oldCase.setStatus(Status.VIDE);
+              }
+              ourPlateau.getLesCases()[oldCase.getX()][oldCase.getY() + movement].setStatus(Status.NAVIRE);
+            }
+          } else {
+            //System.out.println("sameY");
+            movement = (xPosition - shipSelected.getCaseOccupees().get(0).getX()) / Math.abs(xPosition - shipSelected.getCaseOccupees().get(0).getX());
+            for (Case oldCase : shipSelected.getCaseOccupees()) {
+              newCase.add(ourPlateau.getLesCases()[oldCase.getX() + movement][oldCase.getY()]);
+              if (!newCase.contains(oldCase)) {
+                oldCase.setStatus(Status.VIDE);
+              }
+              ourPlateau.getLesCases()[oldCase.getX() + movement][oldCase.getY()].setStatus(Status.NAVIRE);
+
+            }
+          }
+          //System.out.println(movement);
+          //System.out.println(newCase);
+          shipSelected.setCaseOccupees(newCase);
+          //System.out.println(shipSelected.getCaseOccupees());
+        }
+        //int xPositionNav = shipSelected.getCaseOccupees().get(0).getX();
+        //int yPositionNav = shipSelected.getCaseOccupees().get(0).getY();
         shipSelected = null;
+        actionPaneList.clear();
       } else {
         actionPaneList.clear();
         if (shipSelectedTemp != null) {
@@ -283,44 +324,12 @@ public class JoueurController extends BaseController implements Initializable
 
   private void isPositionable(Navire navire, Node source)
   {
-    //int yPosition = ourGameGrid.getRowIndex(source);
-    //int xPosition = ourGameGrid.getColumnIndex(source);
     int panePosition;
+    int oldPanePosition;
     int[] listMovement = {1, -1, NB_CASES, -NB_CASES};
     sameX = true;
-    System.out.println("click position");
+    //System.out.println("click position");
     ArrayList<Pane> tempPaneList = new ArrayList<>();
-    //boolean movable = true;
-    //boolean sameShip = true;
-    /*for(Case laCase : navire.getCaseOccupees()){
-      System.out.println(laCase.getX());
-      System.out.println(laCase.getY());
-      if(laCase.getX() == xPosition){
-            if (laCase.getY() == yPosition+1){
-            movable = true;
-            movement = -1;
-            break;
-          }
-          if(laCase.getY() == yPosition -1){
-            movable = true;
-            movement = 1;
-            break;
-          }
-        }
-      if(laCase.getY() == yPosition){
-        if(laCase.getX() == xPosition+1){
-          movable = true;
-          movement = -NB_CASES;
-          break;
-        }
-        if(laCase.getX() == xPosition -1)
-          {
-            movable = true;
-            movement = NB_CASES;
-            break;
-          }
-        }
-    }*/
     for (int move : listMovement) {
       int xCoord = -1;
       for (Case laCase : navire.getCaseOccupees()) {
@@ -332,13 +341,18 @@ public class JoueurController extends BaseController implements Initializable
             xCoord = laCase.getX();
           }
         }
-        panePosition = laCase.getX() * NB_CASES + laCase.getY() + 1 + move;
-        Pane pane = (Pane) ourGameGrid.getChildren().get(panePosition);
-        if (ourPaneCaseAssociation.get(pane).getStatus().equals(Status.VIDE)) {
-          tempPaneList.add(pane);
+        oldPanePosition = laCase.getX() * NB_CASES + laCase.getY() + 1;
+        Pane oldPane = (Pane) ourGameGrid.getChildren().get(oldPanePosition);
+        //System.out.println(caseIsAccessible(oldPane, move));
+        if(caseIsAccessible(oldPane,move)) {
+          panePosition = laCase.getX() * NB_CASES + laCase.getY() + 1 + move;
+          Pane pane = (Pane) ourGameGrid.getChildren().get(panePosition);
+          if (ourPaneCaseAssociation.get(pane).getStatus().equals(Status.VIDE)) {
+            tempPaneList.add(pane);
+          }
         }
       }
-      System.out.println("sameX : " + sameX);
+      //System.out.println("sameX : " + sameX);
       if (Math.abs(move) == 1) {
         if (sameX) {
           if (tempPaneList.size() == Math.abs(move)) {
@@ -364,5 +378,17 @@ public class JoueurController extends BaseController implements Initializable
     }
   }
 
-
+  private boolean caseIsAccessible(Pane pane, int move)
+  {
+    boolean result = false;
+    int panePosition = (GridPane.getColumnIndex(pane)) * NB_CASES + (GridPane.getRowIndex(pane) + 1);
+    int tempPosition = (GridPane.getColumnIndex(pane)) * NB_CASES + (GridPane.getRowIndex(pane) + 1 + move);
+    if (tempPosition > 0 && tempPosition <= 100) {
+      if (!(tempPosition % NB_CASES == 0 && panePosition % NB_CASES == 1)
+          && !(tempPosition % NB_CASES == 1 && panePosition % NB_CASES == 0)) {
+        result = true;
+      }
+    }
+    return result;
+  }
 }
