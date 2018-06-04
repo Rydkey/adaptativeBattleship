@@ -13,11 +13,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.sql.SQLOutput;
 import java.util.*;
 
-public class JoueurController extends BaseController implements Initializable
-{
+public class JoueurController extends BaseController implements Initializable {
 
   public AnchorPane anchorPane;
   public Rectangle cuirasseRectangle;
@@ -46,10 +44,12 @@ public class JoueurController extends BaseController implements Initializable
   private Plateau ourPlateau;
   private Plateau ennemyPlateau;
   private Boolean positionable = false;
-  private Equipe e = new Equipe();
+  private Equipe equipe1 = new Equipe();
+  private Equipe equipe2 = new Equipe();
   private ArrayList<Joueur> lJ = new ArrayList<>();
   private ArrayList<Pane> actionPaneList = new ArrayList<>();
   private HashMap<Navire, Equipage> lE = new HashMap<>();
+  private HashMap<Navire, Equipage> enemieEquipageAssociation = new HashMap<>();
 
   /*
    * fonction d'initialisation
@@ -88,6 +88,7 @@ public class JoueurController extends BaseController implements Initializable
           ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
         }
         ourPane.setOnMouseClicked(this.interactionShip());
+        ennemyPane.setOnMouseClicked(this.shootAction());
         //ourPane.setOnMouseEntered(this.drawShipPrevision());
         //pane.setOnMouseExited(this.refreshColor());
         ourGameGrid.add(ourPane, i, j);
@@ -95,10 +96,15 @@ public class JoueurController extends BaseController implements Initializable
       }
     }
     Cuirasse c1 = new Cuirasse();
+    Cuirasse c1Enemie = new Cuirasse();
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][3]);
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][4]);
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][5]);
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][6]);
+    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][3]);
+    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][4]);
+    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][5]);
+    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][6]);
     Croiseur cr1 = new Croiseur();
     Croiseur cr2 = new Croiseur();
     Torpilleur t1 = new Torpilleur();
@@ -141,18 +147,35 @@ public class JoueurController extends BaseController implements Initializable
     Equipage e1 = new Equipage(a1, d1);
     lE.put(s1, e1);
     lE.put(s2, e1);
+    lE.put(c1, e1);
     Equipage e2 = new Equipage(a2, d2);
     lE.put(s3, e2);
     lE.put(s4, e2);
-    lE.put(c1, e1);
     lE.put(t3, e2);
 
-    e.setListeJoueur(lJ);
-    e.setAssignationNavireEquipage(lE);
-    //System.out.println(e);
+    Equipage ee1 = new Equipage();
+    enemieEquipageAssociation.put(c1Enemie, ee1);
+
+    equipe1.setListeJoueur(lJ);
+    equipe1.setAssignationNavireEquipage(lE);
+    equipe2.setAssignationNavireEquipage(enemieEquipageAssociation);
+    //System.out.println(equipe1);
 
     Timer timer = new Timer();
     timer.schedule(this, 0, 500);
+  }
+
+  private EventHandler<? super MouseEvent> shootAction()
+  {
+    return event -> {
+      Pane pane = (Pane) event.getSource();
+      Navire shipSelectedTemp = getNavireOfCase(pane);
+      if (shipSelectedTemp != null) {
+        pane.setStyle("-fx-background-color:red");
+      } else {
+        System.out.println("pas touché");
+      }
+    };
   }
 
   private EventHandler<MouseEvent> interactionShip()
@@ -241,7 +264,7 @@ public class JoueurController extends BaseController implements Initializable
           children.setStyle("-fx-color: white");
         } else {
           // Getting a Set of Key-value pairs
-          Set entrySet = e.getAssignationNavireEquipage().entrySet();
+          Set entrySet = equipe1.getAssignationNavireEquipage().entrySet();
           // Obtaining an iterator for the entry set
 
           // Iterate through HashMap entries(Key-Value pairs)
@@ -270,14 +293,21 @@ public class JoueurController extends BaseController implements Initializable
 
   private Navire getNavireOfCase(Pane pane)
   {
+    Set entrySet;
+    Case laCase;
     // Getting a Set of Key-value pairs
-    Set entrySet = e.getAssignationNavireEquipage().entrySet();
+    if ((GridPane) pane.getParent() == ourGameGrid) {
+      entrySet = equipe1.getAssignationNavireEquipage().entrySet();
+      laCase = ourPaneCaseAssociation.get(pane);
+    } else {
+      entrySet = equipe2.getAssignationNavireEquipage().entrySet();
+      laCase = ennemyPaneCaseAssociation.get(pane);
+    }
     // Obtaining an iterator for the entry set
     Iterator it = entrySet.iterator();
     Boolean find = false;
     Navire navire = null;
     Navire navireTemp;
-    Case laCase = ourPaneCaseAssociation.get(pane);
 
     // Iterate through HashMap entries(Key-Value pairs)
     while (it.hasNext() && !find) {
@@ -285,8 +315,6 @@ public class JoueurController extends BaseController implements Initializable
       navireTemp = (Navire) me.getKey();
       List<Case> casesOccupees = navireTemp.getCaseOccupees();
       Equipage equipage = (Equipage) me.getValue();
-      String aN = equipage.getAttaquant().getName();
-      String dN = equipage.getDefenseur().getName();
       for (Case tempCase : casesOccupees) {
         if (laCase.getX() == tempCase.getX() && laCase.getY() == tempCase.getY()) {
           find = true;
@@ -344,7 +372,7 @@ public class JoueurController extends BaseController implements Initializable
         oldPanePosition = laCase.getX() * NB_CASES + laCase.getY() + 1;
         Pane oldPane = (Pane) ourGameGrid.getChildren().get(oldPanePosition);
         //System.out.println(caseIsAccessible(oldPane, move));
-        if(caseIsAccessible(oldPane,move)) {
+        if (caseIsAccessible(oldPane, move)) {
           panePosition = laCase.getX() * NB_CASES + laCase.getY() + 1 + move;
           Pane pane = (Pane) ourGameGrid.getChildren().get(panePosition);
           if (ourPaneCaseAssociation.get(pane).getStatus().equals(Status.VIDE)) {
@@ -390,5 +418,10 @@ public class JoueurController extends BaseController implements Initializable
       }
     }
     return result;
+  }
+
+  public void shoot(MouseEvent mouseEvent)
+  {
+
   }
 }
