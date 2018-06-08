@@ -1,6 +1,7 @@
 package com.battleship.controller;
 
 import com.battleship.model.Case;
+import com.battleship.model.Navire;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.Pane;
 
@@ -32,4 +33,11 @@ public class BaseController extends TimerTask implements Initializable
 
   @Override
   public void initialize(URL location, ResourceBundle resources){  }
+
+  protected void checkBoat(Navire navire)
+  {
+    for (Case lacase : navire.getCaseOccupees()){
+
+    }
+  }
 }

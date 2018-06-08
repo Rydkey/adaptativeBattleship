@@ -82,9 +82,9 @@ public class App extends Application
 
     /*Permission de tirer*/
 //      if (equipeA.getAssignationNavireEquipage().get(torpilleur1).getAttaquant() == matelot1){
-//        if(torpilleur1.isPretATirrer()){
+//        if(torpilleur1.isPretATirer()){
 //          torpilleur1.tire();
-//          torpilleur1.setPretATirrer(false);
+//          torpilleur1.setPretATirer(false);
 //          /*@Todo: check case other plateau*/
 //        }else{
 //          throw new CantShotException();

@@ -10,7 +10,7 @@ public abstract class Navire implements NavireInterface
   private boolean touche;
   private boolean coule;
   private int recharge;
-  private boolean pretATirrer;
+  private boolean pretATirer;
 
   public Navire()
   {
@@ -49,14 +49,14 @@ public abstract class Navire implements NavireInterface
     this.coule = coule;
   }
 
-  public boolean isPretATirrer()
+  public boolean isPretATirer()
   {
-    return pretATirrer;
+    return pretATirer;
   }
 
-  public void setPretATirrer(boolean pretATirrer)
+  public void setPretATirer(boolean pretATirer)
   {
-    this.pretATirrer = pretATirrer;
+    this.pretATirer = pretATirer;
   }
 
   public int getTaille() {
@@ -87,6 +87,6 @@ public abstract class Navire implements NavireInterface
   @Override
   public void tire()
   {
-    /*@Todo: lancer timer*/
+
   }
 }
