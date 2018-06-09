@@ -57,8 +57,6 @@ public class JoueurController extends BaseController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources)
   {
-    System.out.println("ok");
-    //navireRectangleAssociation = new HashMap<>();
     ourPaneCaseAssociation = new HashMap<>();
     ennemyPaneCaseAssociation = new HashMap<>();
     unselectableShip = new ArrayList<>();
@@ -75,18 +73,18 @@ public class JoueurController extends BaseController implements Initializable {
         ennemyPlateau.getLesCases()[i][j] = ennemyCase;
         ourPaneCaseAssociation.put(ourPane, ourCase);
         ennemyPaneCaseAssociation.put(ennemyPane, ennemyCase);
-        if (i == 1 && (j == 1 || j == 3 || j == 7)) {
-          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
-        }
-        if (i == 4 && j == 5) {
-          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
-        }
-        if (i == 5 && (j == 3 || j == 4 || j == 5 || j == 6)) {
-          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
-        }
-        if (j == 2 && (i == 3 || i == 4)) {
-          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
-        }
+//        if (i == 1 && (j == 1 || j == 3 || j == 7)) {
+//          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
+//        }
+//        if (i == 4 && j == 5) {
+//          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
+//        }
+//        if (i == 5 && (j == 3 || j == 4 || j == 5 || j == 6)) {
+//          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
+//        }
+//        if (j == 2 && (i == 3 || i == 4)) {
+//          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
+//        }
         ourPane.setOnMouseClicked(this.interactionShip());
         ennemyPane.setOnMouseClicked(this.shootAction());
         //ourPane.setOnMouseEntered(this.drawShipPrevision());
@@ -101,13 +99,17 @@ public class JoueurController extends BaseController implements Initializable {
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][4]);
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][5]);
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][6]);
-    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[3][5]);
-    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[4][5]);
+    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][3]);
+    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][4]);
     c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][5]);
-    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[6][5]);
-    for (Case lacase : c1Enemie.getCaseOccupees()) {
+    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][6]);
+    List<Case> allship = new ArrayList<>();
+    allship.addAll(c1.getCaseOccupees());
+    allship.addAll(c1Enemie.getCaseOccupees());
+    for (Case lacase : allship) {
       lacase.setStatus(Status.NAVIRE);
     }
+
 //    Croiseur cr1 = new Croiseur();
 //    Croiseur cr2 = new Croiseur();
 //    Torpilleur t1 = new Torpilleur();
@@ -159,9 +161,15 @@ public class JoueurController extends BaseController implements Initializable {
     //System.out.println(equipe1);
 
     Timer timer = new Timer();
-    timer.schedule(this, 0, 200);
+    timer.schedule(this, 0, 1);
   }
 
+  /**
+   * Si l'on tire sur un navire et que la case n'est pas "TOUCHE"
+   * On passe l'état du navire à "touché" et l'on vérifie si il n'est pas "COULE"
+   *
+   * @return
+   */
   private EventHandler<? super MouseEvent> shootAction()
   {
     return event -> {
@@ -170,14 +178,11 @@ public class JoueurController extends BaseController implements Initializable {
       int y = GridPane.getColumnIndex(pane);
       Navire shipSelectedTemp = getNavireOfCase(pane);
       Case lacase = ennemyPaneCaseAssociation.get(pane);
-      if (shipSelectedTemp != null && lacase.getStatus() == Status.NAVIRE) {
+      if (shipSelectedTemp != null && lacase.getStatus() != Status.TOUCHE) {
+        lacase.setStatus(Status.TOUCHE);
         pane.setStyle("-fx-background-color:red");
-        if (!shipSelectedTemp.isTouche()) {
-          shipSelectedTemp.setTouche(true);
-        }
-        System.out.println(x + " " + y);
-        System.out.println(lacase.getX());
-        System.out.println(lacase.getStatus());
+        if (!shipSelectedTemp.isTouche()) shipSelectedTemp.setTouche(true);
+        if (super.navireEtatVerification(shipSelectedTemp)) shipSelectedTemp.setCoule(true);
       } else {
         System.out.println("pas touché");
       }
@@ -192,7 +197,6 @@ public class JoueurController extends BaseController implements Initializable {
       Node source = (Node) event.getSource();
       int yPosition = GridPane.getRowIndex(source);
       int xPosition = GridPane.getColumnIndex(source);
-      int index = xPosition * NB_CASES + yPosition + 1;
       List<Case> newCase = new ArrayList<>();
       int movement;
       if (shipSelected != null) {
@@ -262,8 +266,7 @@ public class JoueurController extends BaseController implements Initializable {
           children.setStyle("-fx-color: white");
         } else {
           // Getting a Set of Key-value pairs
-          HashMap merged = new HashMap();
-          Set entrySet = equipe1.getAssignationNavireEquipage().entrySet();
+          Set<Map.Entry<Navire, Equipage>> entrySet = equipe1.getAssignationNavireEquipage().entrySet();
           // Obtaining an iterator for the entry set
           // Iterate through HashMap entries(Key-Value pairs)
           for (Object anEntrySet : entrySet) {
@@ -302,7 +305,7 @@ public class JoueurController extends BaseController implements Initializable {
           children.setStyle("-fx-color: white");
         } else {
           // Getting a Set of Key-value pairs
-          Set entrySet = equipe2.getAssignationNavireEquipage().entrySet();
+          Set<Map.Entry<Navire, Equipage>> entrySet = equipe2.getAssignationNavireEquipage().entrySet();
           // Obtaining an iterator for the entry set
           // Iterate through HashMap entries(Key-Value pairs)
           for (Object anEntrySet : entrySet) {
@@ -315,6 +318,9 @@ public class JoueurController extends BaseController implements Initializable {
                 switch (laCase.getStatus()) {
                   case TOUCHE:
                     children.setStyle("-fx-background-color:  red");
+                    break;
+                  case COULE:
+                    children.setStyle("-fx-background-color:  black");
                     break;
                 }
               }
