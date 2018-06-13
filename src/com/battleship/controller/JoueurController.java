@@ -13,9 +13,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.*;
 
-public class JoueurController extends BaseController implements Initializable {
+public class JoueurController extends BaseController implements Initializable
+{
 
   public AnchorPane anchorPane;
   public Rectangle cuirasseRectangle;
@@ -157,7 +159,7 @@ public class JoueurController extends BaseController implements Initializable {
 
     Equipage e1 = new Equipage(a1, d1);
     lE.put(c1, e1);
-    lE.put(c2,e1);
+    lE.put(c2, e1);
 
     Equipage ee1 = new Equipage();
     enemieEquipageAssociation.put(c1Enemie, ee1);
@@ -183,15 +185,19 @@ public class JoueurController extends BaseController implements Initializable {
       Pane pane = (Pane) event.getSource();
       int x = GridPane.getRowIndex(pane);
       int y = GridPane.getColumnIndex(pane);
-      Navire shipSelectedTemp = getNavireOfCase(pane);
+      Navire ennemySelectedShip = getNavireOfCase(pane);
       Case lacase = ennemyPaneCaseAssociation.get(pane);
-      if (shipSelectedTemp != null && lacase.getStatus() != Status.TOUCHE) {
-        lacase.setStatus(Status.TOUCHE);
-        pane.setStyle("-fx-background-color:red");
-        if (!shipSelectedTemp.isTouche()) shipSelectedTemp.setTouche(true);
-        if (super.navireEtatVerification(shipSelectedTemp)) shipSelectedTemp.setCoule(true);
-      } else {
-        System.out.println("pas touché");
+      Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+      if (shipSelected != null) {
+        if(shipSelected.isPretATirer()){
+          shipSelected.setPretATirer(false);
+          shipSelected.getRecharge().setTime(System.currentTimeMillis());
+          if (ennemySelectedShip != null){
+            lacase.setStatus(Status.TOUCHE);
+            if (!ennemySelectedShip.isTouche()) ennemySelectedShip.setTouche(true);
+            if (super.navireEtatVerification(ennemySelectedShip)) ennemySelectedShip.setCoule(true);
+          }
+        }
       }
     };
   }
@@ -211,28 +217,28 @@ public class JoueurController extends BaseController implements Initializable {
       int wichMove;
       if (shipSelected != null) {
         orientation = 0;
-        if(shipSelected.getCaseOccupees().size() > 1){
-          if(shipSelected.getCaseOccupees().get(0).getX()  == shipSelected.getCaseOccupees().get(1).getX()){
+        if (shipSelected.getCaseOccupees().size() > 1) {
+          if (shipSelected.getCaseOccupees().get(0).getX() == shipSelected.getCaseOccupees().get(1).getX()) {
             orientation = 1;
           }
         }
         if (actionPaneList.contains(pane)) {
-          if(orientation == 0){
+          if (orientation == 0) {
             direction = yPosition - shipSelected.getCaseOccupees().get(0).getY();
-            if(direction == 0){
+            if (direction == 0) {
               wichMove = 0;
-            }else{
+            } else {
               wichMove = 1;
             }
-          }else{
+          } else {
             direction = xPosition - shipSelected.getCaseOccupees().get(0).getX();
-            if(direction != 0){
-             wichMove = 0;
-            }else{
-             wichMove = 1;
+            if (direction != 0) {
+              wichMove = 0;
+            } else {
+              wichMove = 1;
             }
           }
-          if(wichMove == 0){
+          if (wichMove == 0) {
             movement = (xPosition - shipSelected.getCaseOccupees().get(0).getX())
                 / Math.abs(xPosition - shipSelected.getCaseOccupees().get(0).getX());
             for (Case oldCase : shipSelected.getCaseOccupees()) {
@@ -243,7 +249,7 @@ public class JoueurController extends BaseController implements Initializable {
               ourPlateau.getLesCases()[oldCase.getX() +
                   movement][oldCase.getY()].setStatus(Status.NAVIRE);
             }
-          }else{
+          } else {
             movement = (yPosition - shipSelected.getCaseOccupees().get(0).getY())
                 / Math.abs(yPosition - shipSelected.getCaseOccupees().get(0).getY());
             for (Case oldCase : shipSelected.getCaseOccupees()
@@ -307,15 +313,18 @@ public class JoueurController extends BaseController implements Initializable {
             Equipage equipage = (Equipage) me.getValue();
             String aN = equipage.getAttaquant().getName();
             String dN = equipage.getDefenseur().getName();
+            if (!navire.isPretATirer()){
+              if(System.currentTimeMillis() - navire.getRecharge().getTime() > 5000 ) navire.setPretATirer(true);
+            }
             for (Case laCase : casesOccupees) {
               if (laCase.getX() == tempCase.getX()
                   && laCase.getY() == tempCase.getY()) {
                 switch (laCase.getStatus()) {
                   case NAVIRE:
-                    if (aN.equals("d1") || dN.equals("d1")) {
+                    if (navire.isPretATirer()){
                       children.setStyle("-fx-background-color:  green");
-                    } else {
-                      children.setStyle("-fx-background-color:  blue");
+                    }else{
+                      children.setStyle("-fx-background-color:  #518051");
                     }
                     break;
                   case TOUCHE:
