@@ -1,5 +1,6 @@
 package com.battleship.model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public abstract class Navire implements NavireInterface
   private int taille;
   private boolean touche;
   private boolean coule;
-  private int recharge;
+  private Timestamp recharge;
   private boolean pretATirer;
 
   public Navire()
@@ -17,6 +18,8 @@ public abstract class Navire implements NavireInterface
     this.caseOccupees = new ArrayList<>();
     this.touche = false;
     this.coule = false;
+    this.pretATirer = true;
+    this.recharge = new Timestamp(System.currentTimeMillis());
   }
 
   public List<Case> getCaseOccupees()
@@ -67,11 +70,13 @@ public abstract class Navire implements NavireInterface
     this.taille = taille;
   }
 
-  public int getRecharge() {
+  public Timestamp getRecharge()
+  {
     return recharge;
   }
 
-  public void setRecharge(int recharge) {
+  public void setRecharge(Timestamp recharge)
+  {
     this.recharge = recharge;
   }
 

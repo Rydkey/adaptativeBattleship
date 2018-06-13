@@ -1,7 +1,5 @@
 package com.battleship.model;
 
-import java.util.List;
-
 public class Matelot extends Joueur
 {
   public Matelot()
@@ -9,4 +7,13 @@ public class Matelot extends Joueur
     super();
   }
 
+  public Matelot(String name){
+    super(name);
+  }
+
+  @Override
+  public String toString()
+  {
+    return getName();
+  }
 }

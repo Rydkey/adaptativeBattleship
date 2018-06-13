@@ -1,10 +1,11 @@
 package com.battleship.model;
 
-import java.util.List;
-
 public class Attaquant extends Matelot
 {
-  public Attaquant()
+  public Attaquant() { }
+
+  public Attaquant(String name)
   {
+    super(name);
   }
 }

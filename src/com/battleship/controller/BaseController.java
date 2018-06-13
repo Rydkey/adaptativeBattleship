@@ -35,13 +35,6 @@ public class BaseController extends TimerTask implements Initializable
   @Override
   public void initialize(URL location, ResourceBundle resources){  }
 
-  protected void checkBoat(Navire navire)
-  {
-    for (Case lacase : navire.getCaseOccupees()){
-
-    }
-  }
-
   /**
    * vérifie toutes les cases d'un navire donné et indique si il coule ou non
    *

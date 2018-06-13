@@ -1,10 +1,14 @@
 package com.battleship.controller;
 
 import com.battleship.model.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -18,6 +22,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 //import com.battleship.vue.AmiralView;
@@ -41,10 +46,10 @@ public class AmiralPlacementController extends BaseController
   public Button quit;
   public Button ready;
   public GridPane assigniationGrid;
-  Matelot joueurs[] = new Matelot[6];
+  private Matelot joueurs[] = new Matelot[6];
   private Partie partie;
   private Equipe equipe;
-  private HashMap<Rectangle, Navire> navireRectangleAssociation;
+  private HashMap<Rectangle, Navire> rectangleNavireAssociation;
   private HashMap<Pane, Case> paneCaseAssociation;
   private ArrayList<Rectangle> unselectableShip;
   private Rectangle shipSelected;
@@ -56,22 +61,6 @@ public class AmiralPlacementController extends BaseController
     System.out.println("end");
   }
 
-//  public EventHandler<MouseEvent> placementShip()
-//  {
-//    EventHandler<MouseEvent> mousePositionHandler = new EventHandler<MouseEvent>() {
-//      @Override
-//      public void handle(MouseEvent event)
-//      {
-//        Node source = (Node) event.getSource();
-//        Integer colIndex = GridPane.getColumnIndex(source);
-//        Integer rowIndex = GridPane.getRowIndex(source);
-//        System.out.println("col : " + colIndex);
-//        event.consume();
-//      }
-//    };
-//    return mousePositionHandler;
-//  }
-
   /**
    * place le bateau sur le plateau.
    */
@@ -79,7 +68,7 @@ public class AmiralPlacementController extends BaseController
   {
     return event -> {
       if (shipSelected != null) {
-        Navire navire = navireRectangleAssociation.get(shipSelected);
+        Navire navire = rectangleNavireAssociation.get(shipSelected);
         Node source = (Node) event.getSource();
         ArrayList<Pane> tempPaneList = new ArrayList<>();
         boolean positionable;
@@ -89,13 +78,10 @@ public class AmiralPlacementController extends BaseController
             shipSelected.setFill(Color.GREY);
             paneCaseAssociation.get(pane).setStatus(Status.NAVIRE);
             unselectableShip.add(shipSelected);
-            navireRectangleAssociation.get(shipSelected).getCaseOccupees().add(paneCaseAssociation.get(pane));
+            rectangleNavireAssociation.get(shipSelected).getCaseOccupees().add(paneCaseAssociation.get(pane));
           }
           shipSelected = null;
           partyIsReady();
-          //System.out.println(navireRectangleAssociation);
-          //System.out.println(paneCaseAssociation);
-          //System.out.println(navire.getCaseOccupees());
         }
       }
     };
@@ -104,7 +90,7 @@ public class AmiralPlacementController extends BaseController
   private void partyIsReady()
   {
     boolean allShipPlaced = true;
-    for (Rectangle rectangle : navireRectangleAssociation.keySet()) {
+    for (Rectangle rectangle : rectangleNavireAssociation.keySet()) {
       if (!unselectableShip.contains(rectangle)) {
         allShipPlaced = false;
         break;
@@ -122,7 +108,7 @@ public class AmiralPlacementController extends BaseController
   {
     return event -> {
       if (shipSelected != null) {
-        Navire navire = navireRectangleAssociation.get(shipSelected);
+        Navire navire = rectangleNavireAssociation.get(shipSelected);
         Node source = (Node) event.getSource();
         ArrayList<Pane> tempPaneList = new ArrayList<>();
         boolean positionable;
@@ -141,7 +127,34 @@ public class AmiralPlacementController extends BaseController
   private EventHandler<MouseEvent> getOpPlayer()
   {
     return event -> {
-
+      ComboBox combo = (ComboBox) event.getSource();
+      ArrayList<Matelot> temp = new ArrayList<>();
+      for (Matelot matelot : joueurs) {
+        if (matelot != null) {
+          if (GridPane.getColumnIndex(combo) == 0) {
+            if (!(matelot instanceof Defenseur)) {
+              temp.add(matelot);
+            }
+          } else {
+            if (!(matelot instanceof Attaquant)) {
+              temp.add(matelot);
+            }
+          }
+        }
+      }
+      combo.setItems(FXCollections.observableArrayList(temp));
+      combo.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
+      {
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+        {
+          if (newValue.intValue() > 0) {
+            Defenseur defenseur = new Defenseur(temp.get(newValue.intValue()).getName());
+            Navire n = rectangleNavireAssociation.get(croiseurRectangle1);
+            equipe.getAssignationNavireEquipage().get((n)).setDefenseur(defenseur);
+          }
+        }
+      });
     };
   }
 
@@ -229,7 +242,7 @@ public class AmiralPlacementController extends BaseController
   public void selectShip(MouseEvent event)
   {
     Rectangle clicked = (Rectangle) event.getSource();
-    Navire navireCorrespondant = navireRectangleAssociation.get(clicked);
+    Navire navireCorrespondant = rectangleNavireAssociation.get(clicked);
     if (navireCorrespondant != null && !unselectableShip.contains(clicked)) {
       if (shipSelected != null) {
         shipSelected.setFill(Color.BLUE);
@@ -253,11 +266,16 @@ public class AmiralPlacementController extends BaseController
   @Override
   public void initialize(URL location, ResourceBundle resources)
   {
-    navireRectangleAssociation = new HashMap<>();
+    rectangleNavireAssociation = new HashMap<>();
     paneCaseAssociation = new HashMap<>();
     unselectableShip = new ArrayList<>();
     orientation = false;
+    equipe = new Equipe(NomEquipe.EQUIPEA);
     plateau = new Plateau();
+    for (int i = 0; i < 3; i++) {
+      joueurs[i] = new Matelot();
+      joueurs[i].setName("" + i);
+    }
     for (int i = 0; i < NB_CASES; i++) {
       for (int j = 0; j < NB_CASES; j++) {
         Pane pane = new Pane();
@@ -273,11 +291,7 @@ public class AmiralPlacementController extends BaseController
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 10; j++) {
         ComboBox<Matelot> combo = new ComboBox<>();
-        if (i == 0) {
-//          combo.setOnMouseClicked();
-        } else {
-
-        }
+        combo.setOnMouseClicked(this.getOpPlayer());
         assigniationGrid.add(combo, i, j);
       }
     }
@@ -293,20 +307,27 @@ public class AmiralPlacementController extends BaseController
     SousMarin s3 = new SousMarin();
     SousMarin s4 = new SousMarin();
 
-    for (int i = 0; i < 6; i++) {
-      joueurs[i] = new Matelot();
-    }
+    rectangleNavireAssociation.put(cuirasseRectangle, c1);
+    rectangleNavireAssociation.put(croiseurRectangle1, cr1);
+    rectangleNavireAssociation.put(croiseurRectangle2, cr2);
+    rectangleNavireAssociation.put(torpilleurRectangle1, t1);
+    rectangleNavireAssociation.put(torpilleurRectangle2, t2);
+    rectangleNavireAssociation.put(torpilleurRectangle3, t3);
+    rectangleNavireAssociation.put(sousMarinRectangle1, s1);
+    rectangleNavireAssociation.put(sousMarinRectangle2, s2);
+    rectangleNavireAssociation.put(sousMarinRectangle3, s3);
+    rectangleNavireAssociation.put(sousMarinRectangle4, s4);
 
-    navireRectangleAssociation.put(cuirasseRectangle, c1);
-    navireRectangleAssociation.put(croiseurRectangle1, cr1);
-    navireRectangleAssociation.put(croiseurRectangle2, cr2);
-    navireRectangleAssociation.put(torpilleurRectangle1, t1);
-    navireRectangleAssociation.put(torpilleurRectangle2, t2);
-    navireRectangleAssociation.put(torpilleurRectangle3, t3);
-    navireRectangleAssociation.put(sousMarinRectangle1, s1);
-    navireRectangleAssociation.put(sousMarinRectangle2, s2);
-    navireRectangleAssociation.put(sousMarinRectangle3, s3);
-    navireRectangleAssociation.put(sousMarinRectangle4, s4);
+    for (Map.Entry<Rectangle, Navire> navire : rectangleNavireAssociation.entrySet()) {
+      equipe.getAssignationNavireEquipage().put(navire.getValue(), new Equipage());
+    }
+  }
+
+  private EventHandler<? super InputMethodEvent> test()
+  {
+    return event -> {
+      System.out.println("bite");
+    };
   }
 
   private EventHandler<MouseEvent> refreshColor()
@@ -327,6 +348,5 @@ public class AmiralPlacementController extends BaseController
 
   public void ready(MouseEvent mouseEvent)
   {
-
   }
 }
