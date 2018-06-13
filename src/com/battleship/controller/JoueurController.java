@@ -94,17 +94,23 @@ public class JoueurController extends BaseController implements Initializable {
       }
     }
     Cuirasse c1 = new Cuirasse();
+    Cuirasse c2 = new Cuirasse();
     Cuirasse c1Enemie = new Cuirasse();
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][3]);
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][4]);
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][5]);
     c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][6]);
+    c2.getCaseOccupees().add(ourPlateau.getLesCases()[3][9]);
+    c2.getCaseOccupees().add(ourPlateau.getLesCases()[4][9]);
+    c2.getCaseOccupees().add(ourPlateau.getLesCases()[5][9]);
+    c2.getCaseOccupees().add(ourPlateau.getLesCases()[6][9]);
     c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][3]);
     c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][4]);
     c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][5]);
     c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][6]);
     List<Case> allship = new ArrayList<>();
     allship.addAll(c1.getCaseOccupees());
+    allship.addAll(c2.getCaseOccupees());
     allship.addAll(c1Enemie.getCaseOccupees());
     for (Case lacase : allship) {
       lacase.setStatus(Status.NAVIRE);
@@ -151,6 +157,7 @@ public class JoueurController extends BaseController implements Initializable {
 
     Equipage e1 = new Equipage(a1, d1);
     lE.put(c1, e1);
+    lE.put(c2,e1);
 
     Equipage ee1 = new Equipage();
     enemieEquipageAssociation.put(c1Enemie, ee1);
@@ -161,7 +168,7 @@ public class JoueurController extends BaseController implements Initializable {
     //System.out.println(equipe1);
 
     Timer timer = new Timer();
-    timer.schedule(this, 0, 1);
+    timer.schedule(this, 0, 100);
   }
 
   /**
@@ -199,9 +206,44 @@ public class JoueurController extends BaseController implements Initializable {
       int xPosition = GridPane.getColumnIndex(source);
       List<Case> newCase = new ArrayList<>();
       int movement;
+      int orientation;
+      int direction = 0;
+      int wichMove;
       if (shipSelected != null) {
+        orientation = 0;
+        if(shipSelected.getCaseOccupees().size() > 1){
+          if(shipSelected.getCaseOccupees().get(0).getX()  == shipSelected.getCaseOccupees().get(1).getX()){
+            orientation = 1;
+          }
+        }
         if (actionPaneList.contains(pane)) {
-          if (xPosition == shipSelected.getCaseOccupees().get(0).getX()) {
+          if(orientation == 0){
+            direction = yPosition - shipSelected.getCaseOccupees().get(0).getY();
+            if(direction == 0){
+              wichMove = 0;
+            }else{
+              wichMove = 1;
+            }
+          }else{
+            direction = xPosition - shipSelected.getCaseOccupees().get(0).getX();
+            if(direction != 0){
+             wichMove = 0;
+            }else{
+             wichMove = 1;
+            }
+          }
+          if(wichMove == 0){
+            movement = (xPosition - shipSelected.getCaseOccupees().get(0).getX())
+                / Math.abs(xPosition - shipSelected.getCaseOccupees().get(0).getX());
+            for (Case oldCase : shipSelected.getCaseOccupees()) {
+              newCase.add(ourPlateau.getLesCases()[oldCase.getX() + movement][oldCase.getY()]);
+              if (!newCase.contains(oldCase)) {
+                oldCase.setStatus(Status.VIDE);
+              }
+              ourPlateau.getLesCases()[oldCase.getX() +
+                  movement][oldCase.getY()].setStatus(Status.NAVIRE);
+            }
+          }else{
             movement = (yPosition - shipSelected.getCaseOccupees().get(0).getY())
                 / Math.abs(yPosition - shipSelected.getCaseOccupees().get(0).getY());
             for (Case oldCase : shipSelected.getCaseOccupees()
@@ -214,19 +256,8 @@ public class JoueurController extends BaseController implements Initializable {
               ourPlateau.getLesCases()[oldCase.getX()][oldCase.getY() +
                   movement].setStatus(Status.NAVIRE);
             }
-          } else {
-            movement = (xPosition - shipSelected.getCaseOccupees().get(0).getX())
-                / Math.abs(xPosition - shipSelected.getCaseOccupees().get(0).getX());
-            for (Case oldCase : shipSelected.getCaseOccupees()) {
-              newCase.add(ourPlateau.getLesCases()[oldCase.getX() + movement][oldCase.getY()]);
-              if (!newCase.contains(oldCase)) {
-                oldCase.setStatus(Status.VIDE);
-              }
-              ourPlateau.getLesCases()[oldCase.getX() +
-                  movement][oldCase.getY()].setStatus(Status.NAVIRE);
-
-            }
           }
+
           shipSelected.setCaseOccupees(newCase);
         }
         shipSelected = null;
