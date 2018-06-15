@@ -167,12 +167,12 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="H" GridPane.columnIndex="7">
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="H" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="I" GridPane.columnIndex="8">
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="35.0" text="I" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
                                         <Font size="24.0" />
                                     </font>

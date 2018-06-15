@@ -34,23 +34,4 @@ public class BaseController extends TimerTask implements Initializable
 
   @Override
   public void initialize(URL location, ResourceBundle resources){  }
-
-  /**
-   * vérifie toutes les cases d'un navire donné et indique si il coule ou non
-   *
-   * @param shipSelectedTemp
-   * @return
-   */
-  protected boolean navireEtatVerification(Navire shipSelectedTemp)
-  {
-    boolean coule = true;
-    for (Case lacase : shipSelectedTemp.getCaseOccupees()) {
-      if (lacase.getStatus() == Status.NAVIRE){
-        coule = false;
-        break;
-      }
-    }
-    if (coule) shipSelectedTemp.getCaseOccupees().forEach((Case)->Case.setStatus(Status.COULE));
-    return coule;
-  }
 }
