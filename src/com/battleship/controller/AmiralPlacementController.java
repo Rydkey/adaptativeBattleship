@@ -147,14 +147,17 @@ public class AmiralPlacementController extends BaseController
       combo.setItems(FXCollections.observableArrayList(temp));
       combo.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
       {
+
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
         {
-          System.out.println(observable);
-          System.out.println(oldValue);
-          System.out.println(newValue);
           if (newValue.intValue() > 0) {
             Defenseur defenseur = new Defenseur(temp.get(newValue.intValue()).getName());
+            for (int joueur = 0; joueur < joueurs.length; joueur++) {
+              if (joueurs[joueur] == temp.get(newValue.intValue())){
+                joueurs[joueur] = defenseur;
+              }
+            }
             Navire n = rectangleNavireAssociation.get(croiseurRectangle1);
             equipe.getAssignationNavireEquipage().get((n)).setDefenseur(defenseur);
           }
