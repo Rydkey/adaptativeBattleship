@@ -2,6 +2,7 @@ package com.battleship.controller;
 
 import com.battleship.model.Case;
 import com.battleship.model.Navire;
+import com.battleship.model.Plateau;
 import com.battleship.model.Status;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.Pane;
@@ -27,6 +28,24 @@ public class BaseController extends TimerTask implements Initializable
         break;
     }
     return result;
+  }
+
+  public boolean isFleetAlive(Plateau plateau)
+  {
+    Boolean isAlive = false;
+    Case[][] lesCases = plateau.getLesCases();
+    for (int row=0; row < lesCases.length; row++){
+      for (int column = 0; column < lesCases[row].length; column++) {
+        if (lesCases[row][column].getStatus() == Status.NAVIRE){
+          isAlive = true;
+          break;
+        }
+        if(isAlive){
+          break;
+        }
+      }
+    }
+    return isAlive;
   }
 
   @Override

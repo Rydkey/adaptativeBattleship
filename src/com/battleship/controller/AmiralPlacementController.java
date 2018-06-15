@@ -126,7 +126,9 @@ public class AmiralPlacementController extends BaseController
 
   private EventHandler<MouseEvent> getOpPlayer()
   {
+    //System.out.println("getOpPlayer function");
     return event -> {
+      //System.out.println("getOpPlayer function event");
       ComboBox combo = (ComboBox) event.getSource();
       ArrayList<Matelot> temp = new ArrayList<>();
       for (Matelot matelot : joueurs) {
@@ -148,6 +150,9 @@ public class AmiralPlacementController extends BaseController
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
         {
+          System.out.println(observable);
+          System.out.println(oldValue);
+          System.out.println(newValue);
           if (newValue.intValue() > 0) {
             Defenseur defenseur = new Defenseur(temp.get(newValue.intValue()).getName());
             Navire n = rectangleNavireAssociation.get(croiseurRectangle1);
@@ -274,7 +279,7 @@ public class AmiralPlacementController extends BaseController
     plateau = new Plateau();
     for (int i = 0; i < 3; i++) {
       joueurs[i] = new Matelot();
-      joueurs[i].setName("" + i);
+      joueurs[i].setName("joueur" + i);
     }
     for (int i = 0; i < NB_CASES; i++) {
       for (int j = 0; j < NB_CASES; j++) {

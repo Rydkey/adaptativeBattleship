@@ -288,6 +288,7 @@ public class JoueurController extends BaseController implements Initializable
   @Override
   public void run()
   {
+    System.out.println(isFleetAlive(ennemyPlateau));
     for (Pane pane : actionPaneList) {
       if (positionable) {
         pane.setStyle("-fx-background-color: grey");
