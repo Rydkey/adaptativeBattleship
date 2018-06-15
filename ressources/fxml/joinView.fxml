@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.controller.JoinController">
+   <children>
+      <Label layoutX="537.0" layoutY="222.0" text="Adresse IP to join" />
+      <TextField fx:id="ipAdresse" layoutX="678.0" layoutY="217.0" />
+      <TextField fx:id="pseudo" layoutX="678.0" layoutY="270.0" />
+      <Label layoutX="576.0" layoutY="275.0" text="Pseudo" />
+      <Button fx:id="btnJoin" layoutX="638.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#join" text="Rejoindre" />
+   </children>
+</AnchorPane>

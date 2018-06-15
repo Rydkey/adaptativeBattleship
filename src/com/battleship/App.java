@@ -13,6 +13,7 @@ public class App extends Application
 
   private static final String VUE_JOUEUR  = "/fxml/joueurView.fxml";
   private static final String VUE_AMIRAL  = "/fxml/amiralPlacementView.fxml";
+  private static final String VUE_CONNECT  = "/fxml/connectionView.fxml";
 
 
   public static void main(String[] args)
@@ -26,9 +27,11 @@ public class App extends Application
     /*amiral view*/
     //Parent sceneAmiral = FXMLLoader.load(getClass().getResource(VUE_AMIRAL));
     /*player view*/
-    Parent sceneJoueur = FXMLLoader.load(getClass().getResource(VUE_JOUEUR));
-    primaryStage.setTitle("Amiral");
-    primaryStage.setScene(new Scene(sceneJoueur, 1280, 720));
+    //Parent sceneJoueur = FXMLLoader.load(getClass().getResource(VUE_JOUEUR));
+    /*connection view*/
+    Parent sceneConnection = FXMLLoader.load(getClass().getResource(VUE_CONNECT));
+    primaryStage.setTitle("Welcome");
+    primaryStage.setScene(new Scene(sceneConnection, 1280, 720));
     primaryStage.show();
   }
 }

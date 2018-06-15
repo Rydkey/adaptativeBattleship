@@ -273,7 +273,7 @@ public class JoueurController extends BaseController implements Initializable
   @Override
   public void run()
   {
-    System.out.println(isFleetAlive(equipe2Plateau));
+    //System.out.println(isFleetAlive(equipe2Plateau));
     for (Pane pane : actionPaneList) {
       pane.setStyle("-fx-background-color: red");
     }
