@@ -24,7 +24,7 @@ public class App extends Application
   public void start(Stage primaryStage) throws Exception
   {
     /*amiral view*/
-    Parent sceneAmiral = FXMLLoader.load(getClass().getResource(VUE_AMIRAL));
+    //Parent sceneAmiral = FXMLLoader.load(getClass().getResource(VUE_AMIRAL));
     /*player view*/
     Parent sceneJoueur = FXMLLoader.load(getClass().getResource(VUE_JOUEUR));
     primaryStage.setTitle("Amiral");
