@@ -353,5 +353,6 @@ public class AmiralPlacementController extends BaseController
 
   public void ready(MouseEvent mouseEvent)
   {
+
   }
 }

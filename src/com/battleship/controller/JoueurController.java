@@ -13,17 +13,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static com.battleship.model.Status.VIDE;
+import static java.lang.Thread.sleep;
 
 public class JoueurController extends BaseController implements Initializable
 {
-
   public AnchorPane anchorPane;
   public Rectangle cuirasseRectangle;
   public Rectangle croiseurRectangle1;
-  public GridPane ourGameGrid;
-  public GridPane ennemiesGameGrid;
+  public GridPane equipe1GameGrid;
+  public GridPane equipe2GameGrid;
   public Rectangle croiseurRectangle2;
   public Rectangle torpilleurRectangle1;
   public Rectangle torpilleurRectangle2;
@@ -35,17 +39,12 @@ public class JoueurController extends BaseController implements Initializable
   public Text messageContainer;
   public Button quit;
   private Partie partie;
-  private Equipe equipe;
   //private HashMap<Rectangle, Navire> navireRectangleAssociation;
-  private HashMap<Pane, Case> ourPaneCaseAssociation;
-  private HashMap<Pane, Case> ennemyPaneCaseAssociation;
-  private ArrayList<Rectangle> unselectableShip;
+  private HashMap<Pane, Case> equipe1PaneCaseAssociation;
+  private HashMap<Pane, Case> equipe2PaneCaseAssociation;
   private Navire shipSelected;
-  private boolean orientation;
-  private boolean sameX;
-  private Plateau ourPlateau;
-  private Plateau ennemyPlateau;
-  private Boolean positionable = false;
+  private Plateau equipe1Plateau;
+  private Plateau equipe2Plateau;
   private Equipe equipe1 = new Equipe();
   private Equipe equipe2 = new Equipe();
   private ArrayList<Joueur> lJ = new ArrayList<>();
@@ -59,57 +58,44 @@ public class JoueurController extends BaseController implements Initializable
   @Override
   public void initialize(URL location, ResourceBundle resources)
   {
-    ourPaneCaseAssociation = new HashMap<>();
-    ennemyPaneCaseAssociation = new HashMap<>();
-    unselectableShip = new ArrayList<>();
-    orientation = false;
-    ourPlateau = new Plateau();
-    ennemyPlateau = new Plateau();
+    partie = new Partie();
+    equipe1Plateau = new Plateau();
+    equipe2Plateau = new Plateau();
+    equipe1PaneCaseAssociation = new HashMap<>();
+    equipe2PaneCaseAssociation = new HashMap<>();
+    ArrayList<Rectangle> unselectableShip = new ArrayList<>();
+    boolean orientation = false;
     for (int i = 0; i < NB_CASES; i++) {
       for (int j = 0; j < NB_CASES; j++) {
         Pane ourPane = new Pane();
         Pane ennemyPane = new Pane();
-        Case ourCase = new Case(i, j, Status.VIDE);
-        Case ennemyCase = new Case(i, j, Status.VIDE);
-        ourPlateau.getLesCases()[i][j] = ourCase;
-        ennemyPlateau.getLesCases()[i][j] = ennemyCase;
-        ourPaneCaseAssociation.put(ourPane, ourCase);
-        ennemyPaneCaseAssociation.put(ennemyPane, ennemyCase);
-//        if (i == 1 && (j == 1 || j == 3 || j == 7)) {
-//          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
-//        }
-//        if (i == 4 && j == 5) {
-//          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
-//        }
-//        if (i == 5 && (j == 3 || j == 4 || j == 5 || j == 6)) {
-//          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
-//        }
-//        if (j == 2 && (i == 3 || i == 4)) {
-//          ourPaneCaseAssociation.get(ourPane).setStatus(Status.NAVIRE);
-//        }
+        Case ourCase = new Case(i, j, VIDE);
+        Case ennemyCase = new Case(i, j, VIDE);
+        equipe1Plateau.getLesCases()[i][j] = ourCase;
+        equipe2Plateau.getLesCases()[i][j] = ennemyCase;
+        equipe1PaneCaseAssociation.put(ourPane, ourCase);
+        equipe2PaneCaseAssociation.put(ennemyPane, ennemyCase);
         ourPane.setOnMouseClicked(this.interactionShip());
         ennemyPane.setOnMouseClicked(this.shootAction());
-        //ourPane.setOnMouseEntered(this.drawShipPrevision());
-        //pane.setOnMouseExited(this.refreshColor());
-        ourGameGrid.add(ourPane, i, j);
-        ennemiesGameGrid.add(ennemyPane, i, j);
+        equipe1GameGrid.add(ourPane, i, j);
+        equipe2GameGrid.add(ennemyPane, i, j);
       }
     }
     Cuirasse c1 = new Cuirasse();
     Cuirasse c2 = new Cuirasse();
     Cuirasse c1Enemie = new Cuirasse();
-    c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][3]);
-    c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][4]);
-    c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][5]);
-    c1.getCaseOccupees().add(ourPlateau.getLesCases()[5][6]);
-    c2.getCaseOccupees().add(ourPlateau.getLesCases()[3][9]);
-    c2.getCaseOccupees().add(ourPlateau.getLesCases()[4][9]);
-    c2.getCaseOccupees().add(ourPlateau.getLesCases()[5][9]);
-    c2.getCaseOccupees().add(ourPlateau.getLesCases()[6][9]);
-    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][3]);
-    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][4]);
-    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][5]);
-    c1Enemie.getCaseOccupees().add(ennemyPlateau.getLesCases()[5][6]);
+    c1.getCaseOccupees().add(equipe1Plateau.getLesCases()[5][3]);
+    c1.getCaseOccupees().add(equipe1Plateau.getLesCases()[5][4]);
+    c1.getCaseOccupees().add(equipe1Plateau.getLesCases()[5][5]);
+    c1.getCaseOccupees().add(equipe1Plateau.getLesCases()[5][6]);
+    c2.getCaseOccupees().add(equipe1Plateau.getLesCases()[3][9]);
+    c2.getCaseOccupees().add(equipe1Plateau.getLesCases()[4][9]);
+    c2.getCaseOccupees().add(equipe1Plateau.getLesCases()[5][9]);
+    c2.getCaseOccupees().add(equipe1Plateau.getLesCases()[6][9]);
+    c1Enemie.getCaseOccupees().add(equipe2Plateau.getLesCases()[5][3]);
+    c1Enemie.getCaseOccupees().add(equipe2Plateau.getLesCases()[5][4]);
+    c1Enemie.getCaseOccupees().add(equipe2Plateau.getLesCases()[5][5]);
+    c1Enemie.getCaseOccupees().add(equipe2Plateau.getLesCases()[5][6]);
     List<Case> allship = new ArrayList<>();
     allship.addAll(c1.getCaseOccupees());
     allship.addAll(c2.getCaseOccupees());
@@ -123,16 +109,16 @@ public class JoueurController extends BaseController implements Initializable
 //    Torpilleur t1 = new Torpilleur();
 //    Torpilleur t2 = new Torpilleur();
 //    Torpilleur t3 = new Torpilleur();
-//    t3.getCaseOccupees().add(ourPlateau.getLesCases()[3][2]);
-//    t3.getCaseOccupees().add(ourPlateau.getLesCases()[4][2]);
+//    t3.getCaseOccupees().add(equipe1Plateau.getLesCases()[3][2]);
+//    t3.getCaseOccupees().add(equipe1Plateau.getLesCases()[4][2]);
 //    SousMarin s1 = new SousMarin();
-//    s1.getCaseOccupees().add(ourPlateau.getLesCases()[1][1]);
+//    s1.getCaseOccupees().add(equipe1Plateau.getLesCases()[1][1]);
 //    SousMarin s2 = new SousMarin();
-//    s2.getCaseOccupees().add(ourPlateau.getLesCases()[1][3]);
+//    s2.getCaseOccupees().add(equipe1Plateau.getLesCases()[1][3]);
 //    SousMarin s3 = new SousMarin();
-//    s3.getCaseOccupees().add(ourPlateau.getLesCases()[4][5]);
+//    s3.getCaseOccupees().add(equipe1Plateau.getLesCases()[4][5]);
 //    SousMarin s4 = new SousMarin();
-//    s4.getCaseOccupees().add(ourPlateau.getLesCases()[1][7]);
+//    s4.getCaseOccupees().add(equipe1Plateau.getLesCases()[1][7]);
 
     /*navireRectangleAssociation.put(cuirasseRectangle, c1);
     navireRectangleAssociation.put(croiseurRectangle1, cr1);
@@ -167,7 +153,6 @@ public class JoueurController extends BaseController implements Initializable
     equipe1.setListeJoueur(lJ);
     equipe1.setAssignationNavireEquipage(lE);
     equipe2.setAssignationNavireEquipage(enemieEquipageAssociation);
-    //System.out.println(equipe1);
 
     Timer timer = new Timer();
     timer.schedule(this, 0, 100);
@@ -177,25 +162,25 @@ public class JoueurController extends BaseController implements Initializable
    * Si l'on tire sur un navire et que la case n'est pas "TOUCHE"
    * On passe l'état du navire à "touché" et l'on vérifie si il n'est pas "COULE"
    *
-   * @return
+   * @return event
    */
   private EventHandler<? super MouseEvent> shootAction()
   {
     return event -> {
       Pane pane = (Pane) event.getSource();
-      int x = GridPane.getRowIndex(pane);
-      int y = GridPane.getColumnIndex(pane);
       Navire ennemySelectedShip = getNavireOfCase(pane);
-      Case lacase = ennemyPaneCaseAssociation.get(pane);
-      Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+      Case lacase = equipe2PaneCaseAssociation.get(pane);
       if (shipSelected != null) {
-        if(shipSelected.isPretATirer()){
+        if (shipSelected.isPretATirer()) {
           shipSelected.setPretATirer(false);
           shipSelected.getRecharge().setTime(System.currentTimeMillis());
-          if (ennemySelectedShip != null){
+          if (ennemySelectedShip != null && !ennemySelectedShip.isCoule()) {
             lacase.setStatus(Status.TOUCHE);
             if (!ennemySelectedShip.isTouche()) ennemySelectedShip.setTouche(true);
-            if (super.navireEtatVerification(ennemySelectedShip)) ennemySelectedShip.setCoule(true);
+            if (navireEtatVerification(ennemySelectedShip) ){
+              ennemySelectedShip.setCoule(true);
+              navireSinking(ennemySelectedShip);
+            }
           }
         }
       }
@@ -213,7 +198,7 @@ public class JoueurController extends BaseController implements Initializable
       List<Case> newCase = new ArrayList<>();
       int movement;
       int orientation;
-      int direction = 0;
+      int direction;
       int wichMove;
       if (shipSelected != null) {
         orientation = 0;
@@ -242,11 +227,11 @@ public class JoueurController extends BaseController implements Initializable
             movement = (xPosition - shipSelected.getCaseOccupees().get(0).getX())
                 / Math.abs(xPosition - shipSelected.getCaseOccupees().get(0).getX());
             for (Case oldCase : shipSelected.getCaseOccupees()) {
-              newCase.add(ourPlateau.getLesCases()[oldCase.getX() + movement][oldCase.getY()]);
+              newCase.add(equipe1Plateau.getLesCases()[oldCase.getX() + movement][oldCase.getY()]);
               if (!newCase.contains(oldCase)) {
-                oldCase.setStatus(Status.VIDE);
+                oldCase.setStatus(VIDE);
               }
-              ourPlateau.getLesCases()[oldCase.getX() +
+              equipe1Plateau.getLesCases()[oldCase.getX() +
                   movement][oldCase.getY()].setStatus(Status.NAVIRE);
             }
           } else {
@@ -254,12 +239,12 @@ public class JoueurController extends BaseController implements Initializable
                 / Math.abs(yPosition - shipSelected.getCaseOccupees().get(0).getY());
             for (Case oldCase : shipSelected.getCaseOccupees()
                 ) {
-              newCase.add(ourPlateau.getLesCases()[oldCase.getX()][oldCase.getY() +
+              newCase.add(equipe1Plateau.getLesCases()[oldCase.getX()][oldCase.getY() +
                   movement]);
               if (!newCase.contains(oldCase)) {
-                oldCase.setStatus(Status.VIDE);
+                oldCase.setStatus(VIDE);
               }
-              ourPlateau.getLesCases()[oldCase.getX()][oldCase.getY() +
+              equipe1Plateau.getLesCases()[oldCase.getX()][oldCase.getY() +
                   movement].setStatus(Status.NAVIRE);
             }
           }
@@ -290,16 +275,12 @@ public class JoueurController extends BaseController implements Initializable
   {
     System.out.println(isFleetAlive(ennemyPlateau));
     for (Pane pane : actionPaneList) {
-      if (positionable) {
-        pane.setStyle("-fx-background-color: grey");
-      } else {
-        pane.setStyle("-fx-background-color: red");
-      }
+      pane.setStyle("-fx-background-color: red");
     }
-    for (Node children : ourGameGrid.getChildren()) {
-      Case tempCase = ourPaneCaseAssociation.get(children);
+    for (Node children : equipe1GameGrid.getChildren()) {
+      Case tempCase = equipe1PaneCaseAssociation.get(children);
       if (tempCase != null) {
-        if (caseVerification((Pane) children, ourPaneCaseAssociation)
+        if (caseVerification((Pane) children, equipe1PaneCaseAssociation)
             && !actionPaneList.contains(children)) {
           children.setStyle("-fx-color: white");
         } else {
@@ -314,18 +295,18 @@ public class JoueurController extends BaseController implements Initializable
             Equipage equipage = (Equipage) me.getValue();
             String aN = equipage.getAttaquant().getName();
             String dN = equipage.getDefenseur().getName();
-            if (!navire.isPretATirer()){
-              if(System.currentTimeMillis() - navire.getRecharge().getTime() > 5000 ) navire.setPretATirer(true);
+            if (!navire.isPretATirer()) {
+              if (System.currentTimeMillis() - navire.getRecharge().getTime() > 100) navire.setPretATirer(true);
             }
             for (Case laCase : casesOccupees) {
               if (laCase.getX() == tempCase.getX()
                   && laCase.getY() == tempCase.getY()) {
                 switch (laCase.getStatus()) {
                   case NAVIRE:
-                    if (navire.isPretATirer()){
+                    if (navire.isPretATirer()) {
                       children.setStyle("-fx-background-color:  green");
-                    }else{
-                      children.setStyle("-fx-background-color:  #518051");
+                    } else {
+                      children.setStyle("-fx-background-color:  #69805f");
                     }
                     break;
                   case TOUCHE:
@@ -338,10 +319,10 @@ public class JoueurController extends BaseController implements Initializable
         }
       }
     }
-    for (Node children : ennemiesGameGrid.getChildren()) {
-      Case tempCase = ennemyPaneCaseAssociation.get(children);
+    for (Node children : equipe2GameGrid.getChildren()) {
+      Case tempCase = equipe2PaneCaseAssociation.get(children);
       if (tempCase != null) {
-        if (caseVerification((Pane) children, ennemyPaneCaseAssociation)
+        if (caseVerification((Pane) children, equipe2PaneCaseAssociation)
             && !actionPaneList.contains(children)) {
           children.setStyle("-fx-color: white");
         } else {
@@ -372,18 +353,29 @@ public class JoueurController extends BaseController implements Initializable
     }
   }
 
+  private void navireSinking(Navire navire)
+  {
+    new Thread(() -> {
+      try {
+        sleep(2000);
+        navire.getCaseOccupees().forEach((Case) -> Case.setStatus(VIDE));
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }).start();
+  }
 
   private Navire getNavireOfCase(Pane pane)
   {
     Set<Map.Entry<Navire, Equipage>> entrySet;
     Case laCase;
     // Getting a Set of Key-value pairs
-    if ((GridPane) pane.getParent() == ourGameGrid) {
+    if (pane.getParent() == equipe1GameGrid) {
       entrySet = equipe1.getAssignationNavireEquipage().entrySet();
-      laCase = ourPaneCaseAssociation.get(pane);
+      laCase = equipe1PaneCaseAssociation.get(pane);
     } else {
       entrySet = equipe2.getAssignationNavireEquipage().entrySet();
-      laCase = ennemyPaneCaseAssociation.get(pane);
+      laCase = equipe2PaneCaseAssociation.get(pane);
     }
     // Obtaining an iterator for the entry set
     Iterator<Map.Entry<Navire, Equipage>> it = entrySet.iterator();
@@ -438,7 +430,7 @@ public class JoueurController extends BaseController implements Initializable
     int panePosition;
     int oldPanePosition;
     int[] listMovement = {1, -1, NB_CASES, -NB_CASES};
-    sameX = true;
+    boolean sameX = true;
     //System.out.println("click position");
     ArrayList<Pane> tempPaneList = new ArrayList<>();
     for (int move : listMovement) {
@@ -453,12 +445,12 @@ public class JoueurController extends BaseController implements Initializable
           }
         }
         oldPanePosition = laCase.getX() * NB_CASES + laCase.getY() + 1;
-        Pane oldPane = (Pane) ourGameGrid.getChildren().get(oldPanePosition);
+        Pane oldPane = (Pane) equipe1GameGrid.getChildren().get(oldPanePosition);
         //System.out.println(caseIsAccessible(oldPane, move));
         if (caseIsAccessible(oldPane, move)) {
           panePosition = laCase.getX() * NB_CASES + laCase.getY() + 1 + move;
-          Pane pane = (Pane) ourGameGrid.getChildren().get(panePosition);
-          if (ourPaneCaseAssociation.get(pane).getStatus().equals(Status.VIDE)) {
+          Pane pane = (Pane) equipe1GameGrid.getChildren().get(panePosition);
+          if (equipe1PaneCaseAssociation.get(pane).getStatus().equals(VIDE)) {
             tempPaneList.add(pane);
           }
         }
@@ -503,5 +495,32 @@ public class JoueurController extends BaseController implements Initializable
       }
     }
     return result;
+  }
+
+  /**
+   * vérifie toutes les cases d'un navire donné et indique si il coule ou non
+   *
+   * @param shipSelectedTemp shipSelectedTemp
+   * @return coule
+   */
+  private boolean navireEtatVerification(Navire shipSelectedTemp)
+  {
+    boolean coule = true;
+    for (Case lacase : shipSelectedTemp.getCaseOccupees()) {
+      if (lacase.getStatus() == Status.NAVIRE) {
+        coule = false;
+        break;
+      }
+    }
+    if (coule) {
+      shipSelectedTemp.getCaseOccupees().forEach((Case) -> Case.setStatus(Status.COULE));
+      partieOverVerification();
+    }
+    return coule;
+  }
+
+  private void partieOverVerification()
+  {
+
   }
 }
