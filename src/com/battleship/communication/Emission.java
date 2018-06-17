@@ -8,6 +8,7 @@ public class Emission implements Runnable
 {
   private ObjectOutputStream out;
   private BufferedReader bufferedReader;
+  private String login;
 
   public Emission() { }
 
@@ -15,6 +16,14 @@ public class Emission implements Runnable
   {
     this.out = out;
     this.bufferedReader = bufferedReader;
+    this.login = "server";
+  }
+
+  public Emission(ObjectOutputStream out, BufferedReader bufferedReader, String login)
+  {
+    this.out = out;
+    this.bufferedReader = bufferedReader;
+    this.login = login;
   }
 
   @Override
@@ -22,7 +31,7 @@ public class Emission implements Runnable
   {
     while (true) {
       try {
-        out.writeObject(bufferedReader.readLine());
+        out.writeObject(login + " : " + bufferedReader.readLine());
         out.flush();
       } catch (IOException e) {
         e.printStackTrace();

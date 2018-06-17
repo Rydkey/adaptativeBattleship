@@ -15,7 +15,7 @@ public class Reception implements Runnable
   @Override
   public void run()
   {
-    while(true){
+    while (true) {
       try {
         System.out.println(in.readObject().toString());
       } catch (IOException | ClassNotFoundException e) {

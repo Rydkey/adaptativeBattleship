@@ -7,6 +7,6 @@ public class Server
   public static void main(String[] args) throws IOException
   {
     ServerTcp serverTcp = new ServerTcp(2018);
-    serverTcp.mainloop();
+    serverTcp.partieInitialization();
   }
 }

@@ -8,8 +8,8 @@ public class Client
   public static void main(String[] args) throws IOException
   {
     Socket socket = new Socket("localhost", 2018);
-    InterConnection interConnection = new InterConnection(socket);
+    InterConnection interConnection = new InterConnection(socket, "client");
     interConnection.start();
-    while (socket.isConnected());
+    while (socket.isConnected()) ;
   }
 }
