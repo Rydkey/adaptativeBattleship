@@ -3,7 +3,6 @@ package com.battleship.communication;
 import com.battleship.model.*;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -26,31 +25,42 @@ public class ServerTcp
 
   public void partieInitialization() throws IOException
   {
+    Partie partie = new Partie();
+    for (int i = 0; i < partie.getEquipes().length; i++) {
+      partie.getEquipes()[i] = new Equipe();
+    }
     while (!partie.isEnCours()) {
       Socket clientSocket = serverSocket.accept();
-      Amiral amiral = new Amiral();
       InterConnection interConnection = new InterConnection(clientSocket, "serveur");
-      String message;
-      if (partie.getEquipes()[0] == null) {
-        partie.getEquipes()[0] = new Equipe();
-        partie.getEquipes()[0].setAmiral(amiral);
-        connectionJoueurHashMap.put(interConnection, amiral);
-        message = "vous êtes Amiral de l'équipe 1";
-        interConnection.getOut().writeObject(message);
-      } else {
-        partie.getEquipes()[0] = new Equipe();
-        message = "vous êtes Amiral de l'équipe 2";
-        interConnection.getOut().writeObject(message);
-      }
-      for (InterConnection inter:
-           connectionJoueurHashMap.keySet()) {
-        if (inter != interConnection){
-          inter.getOut().writeObject("connection d'un nouveau challenger");
-        }
-      }
-
       interConnection.setDaemon(true);
       interConnection.start();
+      EquipeInitializer(interConnection, partie);
+      for (Joueur j : partie.getEquipes()[0].getListeJoueur()){
+        System.out.println(j.getClass());
+      }
     }
+  }
+
+  private void EquipeInitializer(InterConnection interConnection, Partie partie)
+  {
+    Joueur joueur;
+    if (partie.getEquipes()[0].getListeJoueur().isEmpty()) {
+      joueur = new Amiral();
+      partie.getEquipes()[0].getListeJoueur().add(joueur);
+    }
+    if (partie.getEquipes()[1].getListeJoueur().isEmpty()) {
+      joueur = new Amiral();
+      partie.getEquipes()[1].getListeJoueur().add(joueur);
+    } else {
+      joueur = new Matelot();
+      int countEquipeA = partie.getEquipes()[0].getListeJoueur().size();
+      int countEquipeB = partie.getEquipes()[1].getListeJoueur().size();
+      if (countEquipeA > countEquipeB) {
+        partie.getEquipes()[1].getListeJoueur().add(joueur);
+      } else {
+        partie.getEquipes()[0].getListeJoueur().add(joueur);
+      }
+    }
+    connectionJoueurHashMap.put(interConnection, joueur);
   }
 }
