@@ -35,18 +35,17 @@ public class ServerTcp
       interConnection.setDaemon(true);
       interConnection.start();
       EquipeInitializer(interConnection, partie);
-      for (Joueur j : partie.getEquipes()[0].getListeJoueur()){
-        System.out.println(j.getClass());
-      }
     }
   }
 
-  private void EquipeInitializer(InterConnection interConnection, Partie partie)
+  private void EquipeInitializer(InterConnection interConnection, Partie partie) throws IOException
   {
     Joueur joueur;
     if (partie.getEquipes()[0].getListeJoueur().isEmpty()) {
       joueur = new Amiral();
       partie.getEquipes()[0].getListeJoueur().add(joueur);
+      Thread thread = new Thread(new AmiralListener(partie, interConnection));
+      thread.start();
     }
     if (partie.getEquipes()[1].getListeJoueur().isEmpty()) {
       joueur = new Amiral();
@@ -55,7 +54,7 @@ public class ServerTcp
       joueur = new Matelot();
       int countEquipeA = partie.getEquipes()[0].getListeJoueur().size();
       int countEquipeB = partie.getEquipes()[1].getListeJoueur().size();
-      if (countEquipeA > countEquipeB) {
+      if (countEquipeA >= countEquipeB) {
         partie.getEquipes()[1].getListeJoueur().add(joueur);
       } else {
         partie.getEquipes()[0].getListeJoueur().add(joueur);

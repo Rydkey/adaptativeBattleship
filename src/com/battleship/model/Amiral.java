@@ -8,4 +8,9 @@ public class Amiral extends Joueur
   {
     super();
   }
+
+  public Amiral(String name)
+  {
+    super(name);
+  }
 }

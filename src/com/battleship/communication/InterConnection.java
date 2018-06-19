@@ -6,6 +6,7 @@ import java.net.Socket;
 public class InterConnection extends Thread
 {
   private ObjectOutputStream out;
+  private Socket socket;
   private ObjectInputStream in;
   private BufferedReader reader;
   private String login;
@@ -13,9 +14,21 @@ public class InterConnection extends Thread
   public InterConnection(Socket socket, String login) throws IOException
   {
     this.login = login;
+    this.socket = socket;
+
     this.out = new ObjectOutputStream(socket.getOutputStream());
     this.in = new ObjectInputStream(socket.getInputStream());
     this.reader = new BufferedReader(new InputStreamReader(System.in));
+  }
+
+  public Socket getSocket()
+  {
+    return socket;
+  }
+
+  public void setSocket(Socket socket)
+  {
+    this.socket = socket;
   }
 
   public void run()

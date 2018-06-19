@@ -31,7 +31,7 @@ public class Emission implements Runnable
   {
     while (true) {
       try {
-        out.writeObject(login + " : " + bufferedReader.readLine());
+        out.writeObject(bufferedReader.readLine());
         out.flush();
       } catch (IOException e) {
         e.printStackTrace();
