@@ -20,10 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 //import com.battleship.vue.AmiralView;
 
@@ -151,15 +148,73 @@ public class AmiralPlacementController extends BaseController
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
         {
-          if (newValue.intValue() > 0) {
+          System.out.println("enter changed function");
+          //System.out.println("old value "+oldValue);
+          //System.out.println("new value "+newValue);
+          Navire n = null;
+          int i =0;
+          //System.out.println(GridPane.getRowIndex(combo));
+          for (Map.Entry<Rectangle, Navire> navire : rectangleNavireAssociation.entrySet()) {
+            if(i==GridPane.getRowIndex(combo)){
+              n = navire.getValue();
+              break;
+            }
+            i++;
+          }
+          if (newValue.intValue() >= 0) {
+            Attaquant attaquant = new Attaquant(temp.get(newValue.intValue()).getName());
             Defenseur defenseur = new Defenseur(temp.get(newValue.intValue()).getName());
-            for (int joueur = 0; joueur < joueurs.length; joueur++) {
-              if (joueurs[joueur] == temp.get(newValue.intValue())){
-                joueurs[joueur] = defenseur;
+            System.out.println(attaquant);
+            if (GridPane.getColumnIndex(combo) == 0) {
+              System.out.println("enter attaquant section");
+              equipe.getAssignationNavireEquipage().get((n)).setAttaquant(attaquant);
+              for (int joueur = 0; joueur < joueurs.length; joueur++) {
+                if (joueurs[joueur] == temp.get(newValue.intValue())){
+                  joueurs[joueur] = attaquant;
+                }
+              }
+            }else{
+              System.out.println("enter defender section");
+              equipe.getAssignationNavireEquipage().get((n)).setDefenseur(defenseur);
+              for (int joueur = 0; joueur < joueurs.length; joueur++) {
+                if (joueurs[joueur] == temp.get(newValue.intValue())){
+                  joueurs[joueur] = defenseur;
+                }
               }
             }
-            Navire n = rectangleNavireAssociation.get(croiseurRectangle1);
-            equipe.getAssignationNavireEquipage().get((n)).setDefenseur(defenseur);
+            HashMap assignation = equipe.getAssignationNavireEquipage();
+            for (int joueur = 0; joueur < joueurs.length; joueur++) {
+              System.out.println("checking player : " + joueurs[joueur]);
+              if (joueurs[joueur] instanceof Defenseur || joueurs[joueur] instanceof Attaquant){
+                System.out.println("find player");
+                Iterator it = assignation.entrySet().iterator();
+                Boolean noAssignation = true;
+                System.out.println("cheking boat");
+                while (it.hasNext()) {
+                  Map.Entry pair = (Map.Entry)it.next();
+                  System.out.println("boat "+pair.getKey());
+                  System.out.println(" boat attaquant "+((Equipage)pair.getValue()).getAttaquant());
+                  System.out.println(" boat attaquant "+((Equipage)pair.getValue()).getDefenseur());
+                  if(((Equipage)pair.getValue()).getAttaquant() == joueurs[joueur] || ((Equipage)pair.getValue()).getDefenseur() == joueurs[joueur]){
+                    System.out.println("found boat");
+                    //System.out.println("attaquant "+((Equipage)pair.getValue()).getAttaquant());
+                    //System.out.println("Defenseur "+((Equipage)pair.getValue()).getDefenseur());
+                    noAssignation = false;
+                    break;
+                  }
+                }
+                //it.remove(); // avoids a ConcurrentModificationException
+                if(noAssignation){
+                  System.out.println("found lazy");
+                  Matelot matelot = new Matelot(joueurs[joueur].getName());
+                  joueurs[joueur] =  null;
+                  joueurs[joueur] = matelot;
+                }
+              }
+              System.out.println("#######################");
+            }
+            //System.out.println(joueurs);
+            System.out.println("----------------------------------------");
           }
         }
       });
@@ -325,6 +380,7 @@ public class AmiralPlacementController extends BaseController
     rectangleNavireAssociation.put(sousMarinRectangle2, s2);
     rectangleNavireAssociation.put(sousMarinRectangle3, s3);
     rectangleNavireAssociation.put(sousMarinRectangle4, s4);
+
 
     for (Map.Entry<Rectangle, Navire> navire : rectangleNavireAssociation.entrySet()) {
       equipe.getAssignationNavireEquipage().put(navire.getValue(), new Equipage());
